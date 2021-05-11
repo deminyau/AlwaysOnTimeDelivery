@@ -7,6 +7,7 @@ public class Node {
     private static int counter = 0;
     private int id; 
     protected Node nextVertex ;
+    protected boolean visited;
     
     public Node (int x, int y, int c){
         id = counter ; 
@@ -14,7 +15,8 @@ public class Node {
         coordinates [0] = x;
         coordinates [1] = y;
         capacity = c;
-        nextVertex = null;}
+        nextVertex = null;
+        visited = false;}
     
     public int getX(){
         return coordinates [0];
@@ -25,10 +27,13 @@ public class Node {
     }
     
     public int getId(){return id;}
+
+    public int getCapacity() {
+        return capacity;}
     
     public String toString (){
         String answer = "X : " + getX() + " Y: " + getY();
         answer += "\nCapacity: " + capacity;
-        answer += "\nId: " + id;
+        answer += "\nId: " + id + "\n";
         return answer;}
 }
