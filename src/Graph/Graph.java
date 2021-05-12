@@ -103,7 +103,7 @@ public class Graph {
          temp = temp.nextVertex;}
          //loop to create vehicle for each big node
          for (int i = 1; i< Number_of_customer; i++){
-           if (getNode(i).getCapacity() < Vehicle.getMax_Capacity()/2) continue;
+           if (getNode(i).getCapacity() < (Vehicle.getMax_Capacity()/3) * 2) continue;
              Vehicle v = new Vehicle();  //start from warehouse
              v.addNode(head); 
              v.addNode(getNode(i));
@@ -127,6 +127,13 @@ public class Graph {
                while (!Remaining_Nodes.isEmpty()){
                Node current = Remaining_Nodes.get(0);
                int i =  Vehicle.PossibleSource(current, Vehicles_List);
+               if (i == -1) {
+                  Vehicle v = new Vehicle(); 
+                  v.addNode(head);
+                  v.addNode(current); 
+                  Vehicles_List.add(v);
+                  Remaining_Nodes.remove(current);
+                   continue;}
                Vehicles_List.get(i).addNode(current);
                Remaining_Nodes.remove(current);}
          
