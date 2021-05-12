@@ -111,17 +111,24 @@ public class Graph {
              Vehicles_List.add(v);}
             
          //after all big nodes are created with individual vehicle, evaluate leftover small node
-            while (!Remaining_Nodes.isEmpty()){
-               Node current = Remaining_Nodes.get(0);
-              int i =  Vehicle.PossibleSource(current, Vehicles_List);
-              if (i == -1) {
+                 int j = 0;
+                while (j < Remaining_Nodes.size()){
+                  Node current = Remaining_Nodes.get(j);
+                  int counter =  Vehicle.PossibleSource(current, Vehicles_List);
+                  if (counter == -1){ //means a separate vehicle
                   Vehicle v = new Vehicle(); 
                   v.addNode(head);
                   v.addNode(current); 
-                  Vehicles_List.add(v);}
-              else {
-                  Vehicles_List.get(i).addNode(current);}
-              Remaining_Nodes.remove(current);}
+                  Vehicles_List.add(v);
+                  Remaining_Nodes.remove(current);
+                  j--;}
+                  j ++;}
+                
+               while (!Remaining_Nodes.isEmpty()){
+               Node current = Remaining_Nodes.get(0);
+               int i =  Vehicle.PossibleSource(current, Vehicles_List);
+               Vehicles_List.get(i).addNode(current);
+               Remaining_Nodes.remove(current);}
          
        
          //everything done i have to add final destination
