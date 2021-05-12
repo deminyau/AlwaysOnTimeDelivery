@@ -12,6 +12,12 @@ public class Vehicle {
     private double Path_Cost;
     private String Description ;
 
+    public static void Resetcounter (){
+        counter = 1;}
+    
+    public static int getMax_Capacity() {
+        return Max_Capacity;}
+
     public double getPath_Cost() {
         return Path_Cost;}
     
@@ -21,6 +27,9 @@ public class Vehicle {
     public Vehicle (){ 
          Vehicle_ID = counter;      //Ex: Vehicle 1
          counter ++;}
+
+    public int getVehicle_ID() {
+        return Vehicle_ID;}
     
     public boolean addNode(Node customer){ //should always check capacity before passing in
             Capacity += customer.getCapacity();
@@ -37,10 +46,28 @@ public class Vehicle {
 
             return true;}
     
+      public Node LatestDestination(){ //method to return latest customer/node added
+          return PathTaken.get(PathTaken.size()-1);}
+      
+    
       public boolean TestNode(Node customer){ //to check whether they are still capacity
           return Capacity + customer.getCapacity() <= Max_Capacity;}
     
-    public String toString(){
+      //evaluate whether we can add customer to one of the present vehicle
+      public static int PossibleSource(Node destination,ArrayList <Vehicle> a){
+          int index = -1;
+          double min = 10000;
+         
+          for (int i = 0; i< a.size(); i++){
+              if (a.get(i).TestNode(destination)){
+                  
+                  if (Graph.Euclidean(destination, a.get(i).LatestDestination()) < min){
+                      min = Graph.Euclidean(destination, a.get(i).LatestDestination());
+                      index = i;}}}
+         //none of the vehicle can accomodate this customer
+          return index;}
+      
+      public String toString(){
         String answer = "Vehicle " + Vehicle_ID;
         answer += "\n" + Description;
         answer += "\nCapacity:" + Capacity;

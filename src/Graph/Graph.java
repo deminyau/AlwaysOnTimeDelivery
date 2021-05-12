@@ -1,4 +1,3 @@
-
 package Graph;
 
 import java.io.FileInputStream;
@@ -75,7 +74,7 @@ public class Graph {
                  //sort all the avaliable destination in ascending order of cost path 
                  //add 0 because closest node
                  if (!v.TestNode(choice[0])) break; //not enough capacity in vehicle
-                 v.addNode(choice[0]);              //add customer to vehicle path 
+                 v.addNode(choice[  0]);              //add customer to vehicle path 
                  Remaining_Nodes.remove(choice[0]); //this customer is serviced
                  current = choice[0].getId();}      //update pointer to latest customer being serviced
              
@@ -92,16 +91,57 @@ public class Graph {
          for (int i = 0; i< Vehicles_List.size() ; i++){
              System.out.println(Vehicles_List.get(i));}
      }
-     
-    
-     
+      
+       public void BasicSimulation(){
+         Reset(); 
+         ArrayList <Vehicle> Vehicles_List = new ArrayList<>();
+         ArrayList <Node> Remaining_Nodes = new ArrayList<>();
+         Node temp = head.nextVertex; //dont need to add warehouse (head)
+         
+         while (temp != null) { 
+         Remaining_Nodes.add(temp);
+         temp = temp.nextVertex;}
+         //loop to create vehicle for each big node
+         for (int i = 1; i< Number_of_customer; i++){
+           if (getNode(i).getCapacity() < Vehicle.getMax_Capacity()/2) continue;
+             Vehicle v = new Vehicle();  //start from warehouse
+             v.addNode(head); 
+             v.addNode(getNode(i));
+             Remaining_Nodes.remove(getNode(i));
+             Vehicles_List.add(v);}
+            
+         //after all big nodes are created with individual vehicle, evaluate leftover small node
+            while (!Remaining_Nodes.isEmpty()){
+               Node current = Remaining_Nodes.get(0);
+              int i =  Vehicle.PossibleSource(current, Vehicles_List);
+              if (i == -1) {
+                  Vehicle v = new Vehicle(); 
+                  v.addNode(head);
+                  v.addNode(current); 
+                  Vehicles_List.add(v);}
+              else {
+                  Vehicles_List.get(i).addNode(current);}
+              Remaining_Nodes.remove(current);}
+         
+       
+         //everything done i have to add final destination
+         for (int i = 0; i<Vehicles_List.size() ;i++){
+             Vehicles_List.get(i).addNode(head);
+             total_cost_path += (Vehicles_List.get(i)).getPath_Cost();}
+          System.out.println("Basic simulation");
+         System.out.println("Tour \nTotal Cost: " + total_cost_path);
+         //display all vehicles 
+         for (int i = 0; i< Vehicles_List.size() ; i++){
+             System.out.println(Vehicles_List.get(i));}
+       } 
      
      public void Reset (){ //reset all visited = false; for diff simulation
          Node temp = head;
          while (temp != null) {
           temp.visited = false;
          temp = temp.nextVertex;}
-         total_cost_path = 0;} 
+         total_cost_path = 0;
+         Vehicle.Resetcounter();} 
     
      
      public Node [] Sorted (Node source,Object [] before_cast){
@@ -116,6 +156,12 @@ public class Graph {
                            a[i] = a[i+1];
                            a[i+1] = temp;}}}
      return a;}
+     
+    /* public Node [] toArray (Object [] before_cast){
+           Node [] a = new Node [before_cast.length];
+             for (int i = 0; i < before_cast.length;i++) {
+             a[i] = (Node) (before_cast[i]);}
+             return a;}*/
 
 }
 
