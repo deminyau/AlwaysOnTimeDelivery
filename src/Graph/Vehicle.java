@@ -11,9 +11,11 @@ public class Vehicle {
     private ArrayList <Node> PathTaken = new ArrayList<>();
     private double Path_Cost;
     private String Description ;
+    private static int Total_Capacity = 0;
 
     public static void Resetcounter (){
-        counter = 1;}
+        counter = 1;
+        Total_Capacity = 0;}
     
     public static int getMax_Capacity() {
         return Max_Capacity;}
@@ -30,8 +32,14 @@ public class Vehicle {
 
     public int getVehicle_ID() {
         return Vehicle_ID;}
+
+    public static int getTotal_Capacity() {
+        return Total_Capacity;}
+    
+    
     
     public boolean addNode(Node customer){ //should always check capacity before passing in
+            Total_Capacity += customer.getCapacity();
             Capacity += customer.getCapacity();
             if (PathTaken.isEmpty()){  //warehouse
                 Path_Cost += 0; 

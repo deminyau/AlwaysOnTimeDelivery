@@ -67,17 +67,21 @@ public class Graph {
              v.addNode(head); //start from warehouse
              Node [] choice ;
              //all the available customer to evaluate on that particular node with exception of warehouse and visited customer
-             
+           
              while (true){
                  if (Remaining_Nodes.isEmpty()) break;  //no more customers 
                  choice = Sorted(getNode(current), Remaining_Nodes.toArray());
                  //sort all the avaliable destination in ascending order of cost path 
-                 //add 0 because closest node
-                 if (!v.TestNode(choice[0])) break; //not enough capacity in vehicle
-                 v.addNode(choice[  0]);              //add customer to vehicle path 
-                 Remaining_Nodes.remove(choice[0]); //this customer is serviced
-                 current = choice[0].getId();}      //update pointer to latest customer being serviced
-             
+                 //Evaluate all potential customer sorted by distance and add
+                 boolean added = false;
+                 for (int i = 0; i<choice.length ; i++){
+                     if (!v.TestNode(choice[i])) continue;
+                     v.addNode(choice[i]);              //add customer to vehicle path 
+                     Remaining_Nodes.remove(choice[i]); //this customer is serviced
+                     current = choice[i].getId();
+                     added = true; //added a customer
+                     break ;} //break for loop go next to newly added customer
+                 if (!added) break;} //break while loop because nothing is added to current path anymore
              
              v.addNode(head); // back to warehouse
              Vehicles_List.add(v);} //next vehicle end while
@@ -111,23 +115,24 @@ public class Graph {
              Vehicles_List.add(v);}
             
          //after all big nodes are created with individual vehicle, evaluate leftover small node
-                 int j = 0;
-                while (j < Remaining_Nodes.size()){
-                  Node current = Remaining_Nodes.get(j);
-                  int counter =  Vehicle.PossibleSource(current, Vehicles_List);
-                  if (counter == -1){ //means a separate vehicle
-                  Vehicle v = new Vehicle(); 
-                  v.addNode(head);
-                  v.addNode(current); 
-                  Vehicles_List.add(v);
-                  Remaining_Nodes.remove(current);
-                  j--;}
-                  j ++;}
+              //forecast the extra needed vehicles, create them using closest unserviced customer
+                int Number_Extra_Vehicles = (getCapacityNeeded() - (Vehicles_List.size() * Vehicle.getMax_Capacity()))
+                         /Vehicle.getMax_Capacity();
+                 Number_Extra_Vehicles += 1 ; //because we will get 2.4 = 2 so round up to 3
                 
+                for (int i = 0; i<Number_Extra_Vehicles ; i++){
+                    Node [] choice  = Sorted(head,Remaining_Nodes.toArray());
+                    Vehicle v = new Vehicle();
+                    v.addNode(head);
+                    v.addNode(choice[0]);
+                    Remaining_Nodes.remove(choice[0]);
+                    Vehicles_List.add(v);} 
+               
                while (!Remaining_Nodes.isEmpty()){
-               Node current = Remaining_Nodes.get(0);
+               Node [] choice = Sorted(Remaining_Nodes.toArray()); //sort remaining customer in descending order of capacity
+               Node current = choice[0]; //give priority to customer with higher priority count
                int i =  Vehicle.PossibleSource(current, Vehicles_List);
-               if (i == -1) {
+               if (i == -1) { //get index of ideal vehicle to add this customer
                   Vehicle v = new Vehicle(); 
                   v.addNode(head);
                   v.addNode(current); 
@@ -156,7 +161,29 @@ public class Graph {
          temp = temp.nextVertex;}
          total_cost_path = 0;
          Vehicle.Resetcounter();} 
+     
+     public int getCapacityNeeded(){
+         int total = 0;
+         Node temp = head ;
+         while (temp != null){
+             total += temp.getCapacity();
+             temp = temp.nextVertex;
+         } return total;}
     
+     
+      public Node [] Sorted (Object [] before_cast){ //sort descending order Capacity
+             Node [] a = new Node [before_cast.length];
+             for (int i = 0; i < before_cast.length;i++) {
+             a[i] = (Node) (before_cast[i]);}
+               for (int pass = 0; pass < a.length - 1; pass++) { //sort array in descending order
+            for (int i = 0; i < a.length - 1 - pass; i++) {
+                if (a[i].getCapacity() < a[i+1].getCapacity()){
+                    Node temp = a[i];
+                           a[i] = a[i+1];
+                           a[i+1] = temp;}}}
+            return a;
+      
+      }
      
      public Node [] Sorted (Node source,Object [] before_cast){
              Node [] a = new Node [before_cast.length];
