@@ -5,13 +5,14 @@ import java.util.ArrayList;
 
 public class Vehicle {
     private static int Max_Capacity;
-    private int Capacity;
+    protected int Capacity;
     private static int counter = 1;
     private int Vehicle_ID;    //to indentify the vehicle
     private ArrayList <Node> PathTaken = new ArrayList<>();
     private double Path_Cost;
     private String Description ;
     private static int Total_Capacity = 0;
+   
 
     public static void Resetcounter (){
         counter = 1;
@@ -59,7 +60,7 @@ public class Vehicle {
       
     
       public boolean TestNode(Node customer){ //to check whether they are still capacity
-          return Capacity + customer.getCapacity() <= Max_Capacity;}
+          return Capacity + customer.getCapacity() <= getMax_Capacity();}
     
       //evaluate whether we can add customer to one of the present vehicle
       public static int PossibleSource(Node destination,ArrayList <Vehicle> a){
