@@ -6,8 +6,9 @@ import java.io.FileNotFoundException;
 
 public class Main {
     public static void main(String[] args) throws FileNotFoundException{
-    ExtraFeatures G1 = new ExtraFeatures("test1.txt");
-    G1.GreedySimulation();
+    Graph G1 = new Graph("test3.txt");
+    G1.ExtraAlgo();
+   
     
     
     }

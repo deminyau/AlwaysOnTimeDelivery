@@ -95,15 +95,9 @@ public class ExtraFeatures extends Graph{
         }
         
          
-         for (int i = 0; i< Vehicles_List.size() ; i++){
-             Vehicles_List.get(i).addNode(head);
-             super.total_cost_path += (Vehicles_List.get(i)).getPath_Cost();}
-         
+         super.total_cost_path = CalculateTourCost(Vehicles_List);
          System.out.println("Greedy simulation with added extra features");
-         System.out.println("Tour \nTotal Cost: " + total_cost_path);
-         //display all vehicles 
-         for (int i = 0; i< Vehicles_List.size() ; i++){
-             System.out.println(Vehicles_List.get(i));}
+         BasicPrint(Vehicles_List);
      }
       
    
