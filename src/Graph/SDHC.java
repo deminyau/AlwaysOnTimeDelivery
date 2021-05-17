@@ -7,11 +7,10 @@ import java.util.ArrayList;
 import java.util.Scanner;
 
 
-public class ExtraFeatures extends Graph{
+public class SDHC extends Graph{
  
-    public ExtraFeatures(String name) throws FileNotFoundException {
-        Scan(name);
-         }//end while}
+    public SDHC(String name) throws FileNotFoundException {
+        Scan(name);}
     
    public boolean addVertex(int x, int y, int c, boolean s){
        Node temp = head;
@@ -39,7 +38,7 @@ public class ExtraFeatures extends Graph{
          }//end while
     }
   
-    public void GreedySimulation(){
+    public void SDHCSimulation(){
          Reset(); 
          ArrayList <Vehicle> Vehicles_List = new ArrayList<>();
          ArrayList <Node> Remaining_Nodes = new ArrayList<>();
