@@ -18,7 +18,6 @@ public class TreeNode<Customer> {
     private List<TreeNode<Customer>> children;
     private int currentcapacity;
     private Customer head;
-    private int[] counterdepth;//only used for root nodes
 
     public void SetHead(Customer head) {
         this.head = head;
@@ -28,13 +27,6 @@ public class TreeNode<Customer> {
         this.data = data;
         this.children = new LinkedList<TreeNode<Customer>>();
         currentcapacity = capacity;
-    }
-
-    public void setCounterdepth(int maxdepth) {
-        counterdepth = new int[maxdepth];
-        for (int x : counterdepth) {
-            x = 0;
-        }
     }
 
     public TreeNode<Customer> addChild(TreeNode<Customer> node) {
@@ -124,47 +116,31 @@ number of different possible routes for a given root node(not using warehouse it
         return List;
     }
     private int counter = 0;
-    private int max = 0;
+
+    private void RecursionAdd(LinkedList<LinkedList<Customer>> List, TreeNode<Customer> node) {
+        // This method is supporting method for AddNodesToRoutes
+        //Create each possible route as a LinkedList<Customer> one by one, save into List
+        if (!node.isLeaf()) { 
+                List.get(counter).add(node.getData());
+                if(node.isRoot())
+                    counter++;
+                else
+                    RecursionAdd(List, node.getParent());
+        } else {
+            List.get(counter).add(node.getData());
+            RecursionAdd(List, node.getParent());
+        }
+    }
 
     private LinkedList<LinkedList<Customer>> AddNodesToRoutes(LinkedList<LinkedList<Customer>> List, TreeNode<Customer> node) {
         //This method is not for independent calling, supporting method for method AllPossibleRoute() only
-        if (node.isLeaf()) {
-            for (int i = counterdepth[node.getDepth()]; i < counterdepth[node.getDepth()] + 1; i++) {
-                List.get(i).add(node.getData());
-                //List.get(i+1).add(head);
-            }
-            counterdepth[node.getDepth()]+=FindNumOfRoute(node.getParent());
-        } else {//can try check the last element is parent of x, 
-            for (int i = counterdepth[node.getDepth()]; i < counterdepth[node.getDepth()]+ FindNumOfRoute(node); i++) {
-                System.out.println("Test FindNumOfRoute(nodes): " + node + " " + FindNumOfRoute(node));
-                if (node.getDepth() == List.get(i).size() - 1) {
-                    List.get(i).add(node.getData());
-                }
-            }
-            counterdepth[node.getDepth()]+=FindNumOfRoute(node);
-            for(int j=node.getDepth()+1;j<counterdepth.length;j++){
-                counterdepth[j]++;//Compensate for the route that the node returns to 0
-            }
-            counterdepth[node.getDepth()+1]++;
-            for (TreeNode<Customer> nodes : node.children) {
-                AddNodesToRoutes(List, nodes);
+        RecursionAdd(List,node);
+        if (!node.isLeaf()) {
+            List<TreeNode<Customer>> nodes = node.getChildren();
+            for (TreeNode<Customer> Node : nodes) {
+                AddNodesToRoutes(List, Node);
             }
         }
-        /*for (int j=0;j<node.children.size();j++) {
-            TreeNode<Customer> nodes=node.children.get(j);
-            if (nodes.isLeaf()) {
-                List.get(counter).add(nodes.getData());
-                counter++;
-            } else {
-                for(int i=counter2;i<FindNumOfRoute(nodes);i++){
-                    System.out.println("Test FindNumOfRoute(nodes): "+nodes+" "+FindNumOfRoute(nodes));
-                    List.get(i).add(nodes.getData());
-                }
-                counter2+=FindNumOfRoute(nodes);
-                counter++;
-                AddNodesToRoutes(List, nodes);
-            }
-        }*/
         return List;
     }
 

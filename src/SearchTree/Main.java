@@ -51,7 +51,6 @@ public class Main {
         
         TreeNode<Customer>[] RootNodes = ConstructSearchTree(customers,G1.getHead());
         for (TreeNode<Customer> treenode : RootNodes) {
-            treenode.setCounterdepth(HighestNode(customers, Vehicle.getMaxcapacity()));
             System.out.println("Number of different routes if the first node is: " + treenode + " = " + treenode.FindNumOfRoute(treenode));
             PrintTree(treenode);
             System.out.println("");
