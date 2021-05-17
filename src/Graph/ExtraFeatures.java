@@ -81,7 +81,7 @@ public class ExtraFeatures extends Graph{
              int index = Vehicle.PossibleSource(choice[0], Vehicles_List);
              //only for small demand customer can use vehicle else use lorry
                 
-             if (choice[0].getCapacity() > Vehicle.getMax_Capacity()/2 ){
+             if (choice[0].getCapacity() > Vehicle.getMax_Capacity()/2 ){ //high demand customer
                  if (!L.TestNode(choice[0])){break;}
                  else Vehicles_List.get(Vehicles_List.size()-1).addNode(choice[0]);}
              
@@ -94,7 +94,8 @@ public class ExtraFeatures extends Graph{
              current = choice[0].getId();}
         }
         
-         
+        for (int i = 0; i<Vehicles_List.size() ;i++){
+             Vehicles_List.get(i).addNode(head);}
          super.total_cost_path = CalculateTourCost(Vehicles_List);
          System.out.println("Greedy simulation with added extra features");
          BasicPrint(Vehicles_List);
