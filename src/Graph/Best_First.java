@@ -41,14 +41,14 @@ public class Best_First extends Graph{
          System.out.println("Best First simulation");
          BasicPrint(Vehicles_List);
      }
-       
+     // this sorted method overides the 1 param sorted method in parent class (Graph) - sort according to nearest distance from depot
      @Override       
      public Node [] Sorted (Object [] before_cast){
              Node [] a = new Node [before_cast.length];
              for (int i = 0; i < before_cast.length;i++) {
              a[i] = (Node) (before_cast[i]);} //cast one by one since cannot cast all at once
          
-           for (int pass = 0; pass < a.length - 1; pass++) { //sort array in ascending order of closest distance
+           for (int pass = 0; pass < a.length - 1; pass++) { //sort array in ascending order of closest distance to depot
             for (int i = 0; i < a.length - 1 - pass; i++) { //cost from depot to customer = straight line distance
                          if (Euclidean(head, a[i]) > Euclidean(head, a[i+1])){
                            Node temp = a[i];

@@ -20,7 +20,7 @@ public class ExtraAlgo extends Graph{
             if (total_cost_path > CalculateTourCost(temp)) {
                 mincosttour = temp;
                 total_cost_path = CalculateTourCost(temp);}}
-         System.out.println("Basic Simulation (Maybe) ");
+         System.out.println("Grp123 Simulation (Extra Feature) ");
          BasicPrint(mincosttour);}
         
         
@@ -52,18 +52,20 @@ public class ExtraAlgo extends Graph{
                  if (whole_Number > 0){ //means have decimal places, should round off 
                  Number_Extra_Vehicles += 1 ;} //because we will get 2.4 = 2 so round up to 3
                 
+                 //predicted how many extra vehicles needed
+                 //we use closest unserviced customer as first destination by the newly assigned vehicles
                 for (int i = 0; i<Number_Extra_Vehicles ; i++){
                     Node [] choice  = Sorted(head,Remaining_Nodes.toArray());
                     Vehicle v = new Vehicle();
-                    v.addNode(head);
+                    v.addNode(head); 
                     v.addNode(choice[0]);
                     Remaining_Nodes.remove(choice[0]);
                     Vehicles_List.add(v);} 
-               
+               //Evaluate the remaning unserviced customer, they can be assigned to any present vehicles accodding to nearest
                while (!Remaining_Nodes.isEmpty()){
-               Node [] choice = Sorted(Remaining_Nodes.toArray()); //sort remaining customer in descending order of capacity
-               Node current = choice[0]; //give priority to customer with higher priority count
-               int i =  Vehicle.PossibleSource(current, Vehicles_List);
+               Node [] choice = Sorted(Remaining_Nodes.toArray()); //sort remaining customer in descending
+               Node current = choice[0]; //give priority to customer with higher demands first
+               int i =  Vehicle.PossibleSource(current, Vehicles_List); 
                if (i == -1) { //get index of ideal vehicle to add this customer
                   Vehicle v = new Vehicle(); 
                   v.addNode(head);
@@ -76,7 +78,7 @@ public class ExtraAlgo extends Graph{
              for (int i = 0; i<Vehicles_List.size() ;i++){
              Vehicles_List.get(i).addNode(head);}
        return Vehicles_List;
-         //everything done i have to add final destination
+         //return current vehicle list to be evaluated later by recursions
 }
      
 }

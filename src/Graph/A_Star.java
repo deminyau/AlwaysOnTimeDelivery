@@ -50,7 +50,7 @@ public class A_Star extends Graph{
          System.out.println("A* simulation");
          BasicPrint(Vehicles_List);
      }
-       
+     //this sorted() is used uniquely by A* simulation because it takes into account the distance from current node to goal (warehouse)
      @Override       
      public Node [] Sorted (Node source,Object [] before_cast){
              Node [] a = new Node [before_cast.length];

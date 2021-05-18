@@ -70,7 +70,7 @@ public class Graph {
              temp = temp.nextVertex;
          } return total;}
     
-     
+     //this sorted() is only used by Grp 123Algo (Algo by Group123) simulation 
       public Node [] Sorted (Object [] before_cast){ //sort descending order Capacity
              Node [] a = new Node [before_cast.length];
              for (int i = 0; i < before_cast.length;i++) {
@@ -82,7 +82,9 @@ public class Graph {
                            a[i] = a[i+1];
                            a[i+1] = temp;}}}
             return a;}
-     
+      
+      //this 2 sorted have diff param (overload), so it is ok u keep them same name
+      //this sorted() is used by  Greedy, Grp 123 ,SDHC simulation
       //ascending order in distance from one node to another
        public Node [] Sorted (Node source,Object [] before_cast){
              Node [] a = new Node [before_cast.length];
@@ -110,7 +112,7 @@ public class Graph {
             tourcost += (Vehicles_List.get(i)).getPath_Cost();}
         return tourcost;}
 
-   
+   //
 
 }
 
