@@ -11,27 +11,30 @@ package SearchTree;
  */
 import java.util.*;
 
-public class TreeNode<Customer> {
+public class TreeNode<E> {
 
-    private Customer data;
-    private TreeNode<Customer> parent;
-    private List<TreeNode<Customer>> children;
+    private E data;
+    private TreeNode<E> parent;
+    private List<TreeNode<E>> children;
     private int currentcapacity;
-    private Customer head;
+    private E head;
 
-    public void SetHead(Customer head) {
+    public void SetHead(E head) {
         this.head = head;
     }
 
-    public TreeNode(Customer data, int capacity) {
+    public TreeNode(E data, int capacity) {
         this.data = data;
-        this.children = new LinkedList<TreeNode<Customer>>();
+        this.children = new LinkedList<TreeNode<E>>();
         currentcapacity = capacity;
     }
-
-    public TreeNode<Customer> addChild(TreeNode<Customer> node) {
+    public TreeNode(E data) {
+        this.data = data;
+        this.children = new LinkedList<TreeNode<E>>();
+    }
+    public TreeNode<E> addChild(TreeNode<E> node) {
         if (this.currentcapacity + node.getCurrentcapacity() <= Vehicle.getMaxcapacity()) {
-            TreeNode<Customer> childNode = new TreeNode<Customer>(node.getData(), node.getCurrentcapacity());
+            TreeNode<E> childNode = new TreeNode<E>(node.getData(), node.getCurrentcapacity());
             childNode.parent = this;
             this.children.add(childNode);
             return childNode;
@@ -39,16 +42,16 @@ public class TreeNode<Customer> {
         return null;
     }
 
-    public TreeNode<Customer> addChild(Customer child, int capacity) {
+    public TreeNode<E> addChild(E child, int capacity) {
         if (this.currentcapacity + capacity <= Vehicle.getMaxcapacity()) {
-            TreeNode<Customer> childNode = new TreeNode<Customer>(child, capacity);
+            TreeNode<E> childNode = new TreeNode<E>(child, capacity);
             this.children.add(childNode);
             return childNode;
         }
         return null;
     }
 
-    public List<TreeNode<Customer>> getChildren() {
+    public List<TreeNode<E>> getChildren() {
         return children;
     }
 
@@ -56,11 +59,11 @@ public class TreeNode<Customer> {
         return currentcapacity;
     }
 
-    public Customer getData() {
+    public E getData() {
         return data;
     }
 
-    public TreeNode<Customer> getParent() {
+    public TreeNode<E> getParent() {
         return parent;
     }
 
@@ -80,14 +83,14 @@ public class TreeNode<Customer> {
         }
     }
 
-    public int FindNumOfRoute(TreeNode<Customer> node) {
+    public int FindNumOfRoute(TreeNode<E> node) {
         /*Actually the result is also the number of nodes under that tree including the root node itself
 number of different possible routes for a given root node(not using warehouse itself as root node to avoid having route 0>0)
 =number of nodes under it+itself*/
         int num = 0;
         if (!node.isLeaf()) {
             num++;
-            for (TreeNode<Customer> nodes : node.getChildren()) {
+            for (TreeNode<E> nodes : node.getChildren()) {
                 num += FindNumOfRoute(nodes);
             }
             return num;
@@ -96,17 +99,17 @@ number of different possible routes for a given root node(not using warehouse it
         }
     }
 
-    public LinkedList<LinkedList<Customer>> AllPossibleRoute() {
-        LinkedList<LinkedList<Customer>> List = new LinkedList();
+    public LinkedList<LinkedList<E>> AllPossibleRoute() {
+        LinkedList<LinkedList<E>> List = new LinkedList();
         if (this.isRoot()) {//Use this method for root nodes only
-            for (int i = 0; i < FindNumOfRoute((TreeNode<Customer>) this); i++) {
+            for (int i = 0; i < FindNumOfRoute((TreeNode<E>) this); i++) {
                 //Create and initialize all routes with head added first
-                LinkedList<Customer> list = new LinkedList();
+                LinkedList<E> list = new LinkedList();
                 list.add(head);
                 List.add(list);
             }
             AddNodesToRoutes(List, this);
-            for (int i = 0; i < FindNumOfRoute((TreeNode<Customer>) this); i++) {
+            for (int i = 0; i < FindNumOfRoute((TreeNode<E>) this); i++) {
                 //Add warehouse as ending to all possible routes
                 if (!List.get(i).get(List.get(i).size() - 1).equals(head)) {
                     List.get(i).add(head);
@@ -117,7 +120,7 @@ number of different possible routes for a given root node(not using warehouse it
     }
     private int counter = 0;
 
-    private void RecursionAdd(LinkedList<LinkedList<Customer>> List, TreeNode<Customer> node) {
+    private void RecursionAdd(LinkedList<LinkedList<E>> List, TreeNode<E> node) {
         // This method is supporting method for AddNodesToRoutes
         //Create each possible route as a LinkedList<Customer> one by one, save into List
         if (!node.isLeaf()) { 
@@ -132,30 +135,28 @@ number of different possible routes for a given root node(not using warehouse it
         }
     }
 
-    private LinkedList<LinkedList<Customer>> AddNodesToRoutes(LinkedList<LinkedList<Customer>> List, TreeNode<Customer> node) {
+    private LinkedList<LinkedList<E>> AddNodesToRoutes(LinkedList<LinkedList<E>> List, TreeNode<E> node) {
         //This method is not for independent calling, supporting method for method AllPossibleRoute() only
         RecursionAdd(List,node);
         if (!node.isLeaf()) {
-            List<TreeNode<Customer>> nodes = node.getChildren();
-            for (TreeNode<Customer> Node : nodes) {
+            List<TreeNode<E>> nodes = node.getChildren();
+            for (TreeNode<E> Node : nodes) {
                 AddNodesToRoutes(List, Node);
             }
         }
         return List;
     }
-
-    private int AddToRoutes(LinkedList<LinkedList<Customer>> List, int start, int stop, TreeNode<Customer> node, int howmany) {
-        for (int i = start; i < stop && howmany > 0; i++) {
-            List.get(i).add(node.getData());
-            howmany--;
-        }
-        if (stop < List.size()) {
-            return stop;
-        } else {
-            return 0;
+    
+    public void PrintTree(TreeNode<E> rootnode) {
+        System.out.println("Depth: " + rootnode.getDepth() + " " + rootnode);
+        if (!rootnode.isLeaf()) {
+            List<TreeNode<E>> nodes = rootnode.getChildren();
+            for (TreeNode<E> node : nodes) {
+                PrintTree(node);
+            }
         }
     }
-
+    
     @Override
     public String toString() {
         return data != null ? data.toString() : "[data null]";

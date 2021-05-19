@@ -240,6 +240,7 @@ public class Graph {
         System.out.println("Tour \nTotal Cost: " + total_cost_path);
         //display all vehicles 
         for (int i = 0; i < Vehicles_List.size(); i++) {
+            System.out.println("");
             System.out.println(Vehicles_List.get(i));
         }
     }

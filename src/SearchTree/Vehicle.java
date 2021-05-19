@@ -1,6 +1,6 @@
 package SearchTree;
 
-import java.util.ArrayList;
+import java.util.*;
 
 public class Vehicle {
 
@@ -8,7 +8,7 @@ public class Vehicle {
     private int Capacity;
     private static int counter = 1;
     private int Vehicle_ID;    //to indentify the vehicle
-    private ArrayList<Customer> PathTaken = new ArrayList<>();
+    private LinkedList<Customer> PathTaken = new LinkedList<>();
     private double Path_Cost;
     private String Description;
     private static int Total_Capacity = 0;
@@ -35,7 +35,12 @@ public class Vehicle {
         counter++;
     }
 
-    public ArrayList<Customer> getPathTaken() {
+    public Vehicle(LinkedList<Customer> list) {
+        Vehicle_ID = counter;      //Ex: Vehicle 1
+        counter++;
+        this.addRoute(list);
+    }
+    public LinkedList<Customer> getPathTaken() {
         return PathTaken;
     }
 
@@ -68,7 +73,12 @@ public class Vehicle {
 
         return true;
     }
-
+    
+    public void addRoute(LinkedList<Customer> list){
+        for(Customer customer:list){
+            addNode(customer);
+        }
+    }
     public Customer LatestDestination() { //method to return latest customer/node added
         return PathTaken.get(PathTaken.size() - 1);
     }
