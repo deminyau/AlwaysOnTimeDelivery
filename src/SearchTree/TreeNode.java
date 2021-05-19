@@ -131,7 +131,9 @@ number of different possible routes for a given root node(not using warehouse it
                     RecursionAdd(List, node.getParent());
         } else {
             List.get(counter).add(node.getData());
-            RecursionAdd(List, node.getParent());
+            if (!node.isRoot()) {
+                RecursionAdd(List, node.getParent());
+            }
         }
     }
 
