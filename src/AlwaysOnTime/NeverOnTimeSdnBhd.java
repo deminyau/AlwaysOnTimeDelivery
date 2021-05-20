@@ -32,7 +32,7 @@ public class NeverOnTimeSdnBhd {
 
             if (choice == 1) {
 
-                BasicBFS bfs = new BasicBFS();
+                BasicBFS bfs = new BasicBFS(filename);
                 System.out.println("-----------------------------");
 
             } else if (choice == 2) {

@@ -14,28 +14,31 @@ import java.util.Scanner;
  *
  * @author @author Hong Zhao Cheng Chiew Zhe Wei Yau De Min Wong Yu Xuan
  */
-public class BasicBFS {
+public class BasicBFS extends Graph{
 
-    public BasicBFS() {
+    public BasicBFS(String filename) throws FileNotFoundException{
         //long timestart = 0;
+        super(filename);
         LinkedList<Node> customers = new LinkedList();
-        Scanner s = new Scanner(System.in);
-        System.out.println("Enter txt file name: ");
-        String filename = s.nextLine();
-        Graph G1 = null;
-        try {
-            //timestart = System.currentTimeMillis();
-            G1 = new Graph(filename);
-            Node temp = G1.head.nextVertex;
-            while (temp != null) {
-                customers.add(temp);
-                temp = temp.nextVertex;
-            }
-        } catch (FileNotFoundException e) {
-            System.out.println("File not found");
+        Node temp=head.nextVertex;
+        while(temp!=null){
+             customers.add(temp);
+             temp = temp.nextVertex;
         }
+//        Graph G1 = null;
+//        try {
+//            //timestart = System.currentTimeMillis();
+//            G1 = new Graph(filename);
+//            Node temp = G1.head.nextVertex;
+//            while (temp != null) {
+//                customers.add(temp);
+//                temp = temp.nextVertex;
+//            }
+//        } catch (FileNotFoundException e) {
+//            System.out.println("File not found");
+//        }
 
-        TreeNode<Node>[] RootNodes = ConstructSearchTree(customers, G1.getHead());
+        TreeNode<Node>[] RootNodes = ConstructSearchTree(customers, super.getHead());
         LinkedList<Node> RootNodesList = new LinkedList();
         for (TreeNode<Node> treenode : RootNodes) {
             RootNodesList.add(treenode.getData());

@@ -11,7 +11,7 @@ import java.util.Scanner;
  */
 public class Graph {
 
-    public Node head;
+    protected Node head;
     protected static int Number_of_customer;
     protected double total_cost_path;
 
