@@ -84,6 +84,8 @@ public class Graph {
     public Node getNode(int index) {
         Node temp = head;
         for (int i = 0; i < index; i++) {
+            if(temp.getId()==index)
+                return temp;
             temp = temp.nextVertex;
         }
         return temp;
