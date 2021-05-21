@@ -1,5 +1,7 @@
 package AlwaysOnTime;
 
+import java.util.LinkedList;
+
 /**
  *
  * @author Hong Zhao Cheng Chiew Zhe Wei Yau De Min Wong Yu Xuan
@@ -11,8 +13,9 @@ public class Node implements Comparable {
     private static int counter = 0;
     private int id;
     public Node nextVertex;
-    protected boolean visited;
+    public boolean visited;
     private boolean Site_Dependent;
+    public LinkedList <Node> Unchecked;
 
     public Node(int x, int y, int c) {
         id = counter;
@@ -42,7 +45,14 @@ public class Node implements Comparable {
         nextVertex = null;
         visited = false;
         Site_Dependent = s;
+        assignUnchecked();
     }
+    
+    public void assignUnchecked (){
+            for (int i = 0; i< Graph.allCustomers.size() ; i++){
+                Node temp = Graph.allCustomers.get(i);
+                if (this.capacity + temp.getCapacity() <= Vehicle.getMax_Capacity()) {
+                    Unchecked.add(temp);}}}
 
     public int getX() {
         return coordinates[0];
@@ -70,4 +80,17 @@ public class Node implements Comparable {
         answer += "\nId: " + id + "\n";
         return answer;
     }
+    
+    public boolean testNode (Node a){
+        return (this.capacity + a.capacity) <= Vehicle.getMax_Capacity();}
+    
+    
+     public static LinkedList <Node> getRemaining(){
+        LinkedList <Node> answer = new LinkedList<>();
+       for (int i = 0; i< Graph.allCustomers.size() ; i++){
+                Node temp = Graph.allCustomers.get(i);
+                if (!temp.visited) answer.add(temp);}
+       return answer;}   
+     
+  
 }

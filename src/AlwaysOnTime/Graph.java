@@ -11,12 +11,18 @@ import java.util.Scanner;
  */
 public class Graph {
 
-    protected Node head;
+    public Node head;
     protected static int Number_of_customer;
     protected double total_cost_path;
-
-    public Graph() {
-    }
+    public static LinkedList <Node> allCustomers = new LinkedList<>();
+            
+    public void AssignAll(){
+        Node temp = head;
+        while (temp!= null){
+            allCustomers.add(temp);
+            temp = temp.nextVertex;}}
+   
+    public Graph() {}
 
     public boolean addVertex(int x, int y, int c) {
         Node temp = head;
@@ -33,7 +39,7 @@ public class Graph {
     }
 
     public Graph(String name) throws FileNotFoundException {
-        Scan(name);
+        Scan(name); AssignAll();
     } //input filename
 
     public void Scan(String name) throws FileNotFoundException {
@@ -167,5 +173,14 @@ public class Graph {
         return tourcost;
     }
 
-    //
+     public LinkedList <Node> getPossibleSuccessor(Node a){
+       LinkedList <Node> answer = new LinkedList<>();
+       Node temp = head;
+       while (temp != null){
+           if (a.getCapacity() + temp.getCapacity() < Vehicle.getMax_Capacity())
+               answer.add(temp);
+           temp = temp.nextVertex;}
+       return answer;}
+    
+    
 }
