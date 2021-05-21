@@ -1,40 +1,29 @@
 package Algorithm;
 
-import AlwaysOnTime.*;
+import AlwaysOnTime.TreeNode;
+import AlwaysOnTime.Graph;
+import AlwaysOnTime.Node;
+import AlwaysOnTime.Vehicle;
 import java.io.FileNotFoundException;
 import java.util.Collections;
-import java.util.LinkedList;
 import java.util.List;
-
+import java.util.LinkedList;
 
 /**
  *
  * @author @author Hong Zhao Cheng Chiew Zhe Wei Yau De Min Wong Yu Xuan
  */
-public class BasicBFS extends Graph{
+public class BasicBFS extends Graph {
 
-    public BasicBFS(String filename) throws FileNotFoundException{
+    public BasicBFS(String filename) throws FileNotFoundException {
         //long timestart = 0;
         super(filename);
         LinkedList<Node> customers = new LinkedList();
-        Node temp=head.nextVertex;
-        while(temp!=null){
-             customers.add(temp);
-             temp = temp.nextVertex;
+        Node temp = head.nextVertex;
+        while (temp != null) {
+            customers.add(temp);
+            temp = temp.nextVertex;
         }
-//        Graph G1 = null;
-//        try {
-//            //timestart = System.currentTimeMillis();
-//            G1 = new Graph(filename);
-//            Node temp = G1.head.nextVertex;
-//            while (temp != null) {
-//                customers.add(temp);
-//                temp = temp.nextVertex;
-//            }
-//        } catch (FileNotFoundException e) {
-//            System.out.println("File not found");
-//        }
-
         TreeNode<Node>[] RootNodes = ConstructSearchTree(customers, super.getHead());
         LinkedList<Node> RootNodesList = new LinkedList();
         for (TreeNode<Node> treenode : RootNodes) {
@@ -52,8 +41,6 @@ public class BasicBFS extends Graph{
             }
         }
         BasicSimulation(RouteList, RootNodesList);
-        //long timeend = System.currentTimeMillis();
-        //System.out.println("Time elapsed: " + (timeend - timestart) + " ms");
     }
 
     public static int HighestNode(LinkedList<Node> customers, int maxcapacity) {
@@ -215,6 +202,14 @@ public class BasicBFS extends Graph{
         BasicPrint(minTourVehicle);
     }
 
+    public void BasicPrint(LinkedList<Vehicle> Vehicles_List) {
+        System.out.println("Tour \nTotal Cost: " + MinCost);
+        //display all vehicles 
+        for (int i = 0; i < Vehicles_List.size(); i++) {
+            System.out.println("");
+            System.out.println(Vehicles_List.get(i));
+        }
+    }
     private static double MinCost = Double.MAX_VALUE;
     private static LinkedList<LinkedList<Node>> MinTour = new LinkedList();
 

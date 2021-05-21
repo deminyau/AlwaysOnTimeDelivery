@@ -4,7 +4,9 @@ package Algorithm;
  *
  * @author @author Hong Zhao Cheng Chiew Zhe Wei Yau De Min Wong Yu Xuan
  */
-import AlwaysOnTime.*;
+import AlwaysOnTime.Graph;
+import AlwaysOnTime.Node;
+import AlwaysOnTime.Vehicle;
 import java.io.FileNotFoundException;
 import java.util.LinkedList;
 
@@ -20,7 +22,7 @@ public class ExtraAlgo extends Graph {
 
         for (double i = 50; i < 100; i++) {
             double value = i / (double) 100;
-            LinkedList<Vehicle> temp = PredictedPath(value);
+           LinkedList<Vehicle> temp = PredictedPath(value);
             total_cost_path = CalculateTourCost(mincosttour);
             if (total_cost_path > CalculateTourCost(temp)) {
                 mincosttour = temp;
@@ -33,8 +35,8 @@ public class ExtraAlgo extends Graph {
 
     public LinkedList<Vehicle> PredictedPath(double z) {
         Reset();
-       LinkedList<Vehicle> Vehicles_List = new LinkedList<>();
-       LinkedList<Node> Remaining_Nodes = new LinkedList<>();
+        LinkedList<Vehicle> Vehicles_List = new LinkedList<>();
+        LinkedList<Node> Remaining_Nodes = new LinkedList<>();
         Node temp = head.nextVertex; //dont need to add warehouse (head)
 
         while (temp != null) {

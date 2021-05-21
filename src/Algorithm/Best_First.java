@@ -4,7 +4,10 @@ package Algorithm;
  *
  * @author @author Hong Zhao Cheng Chiew Zhe Wei Yau De Min Wong Yu Xuan
  */
-import AlwaysOnTime.*;
+import AlwaysOnTime.Graph;
+import AlwaysOnTime.Node;
+import AlwaysOnTime.Vehicle;
+import static AlwaysOnTime.Graph.Euclidean;
 import java.io.FileNotFoundException;
 import java.util.LinkedList;
 

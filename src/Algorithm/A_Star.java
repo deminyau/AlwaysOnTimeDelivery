@@ -1,6 +1,9 @@
 package Algorithm;
 
-import AlwaysOnTime.*;
+import AlwaysOnTime.Graph;
+import AlwaysOnTime.Node;
+import AlwaysOnTime.Vehicle;
+
 import java.io.FileNotFoundException;
 import java.util.LinkedList;
 

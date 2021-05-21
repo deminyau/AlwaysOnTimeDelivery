@@ -4,7 +4,6 @@ package AlwaysOnTime;
  *
  * @author Hong Zhao Cheng Chiew Zhe Wei Yau De Min Wong Yu Xuan
  */
-
 import java.util.LinkedList;
 
 public class Vehicle {

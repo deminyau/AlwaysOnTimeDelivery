@@ -1,7 +1,11 @@
 package Algorithm;
 
-import AlwaysOnTime.*;
-import java.io.*;
+import AlwaysOnTime.Graph;
+import AlwaysOnTime.Lorry;
+import AlwaysOnTime.Node;
+import AlwaysOnTime.Vehicle;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.util.LinkedList;
 import java.util.Scanner;
 
