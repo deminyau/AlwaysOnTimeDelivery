@@ -13,9 +13,9 @@ public class NeverOnTimeSdnBhd {
     public static Scanner group123 = new Scanner(System.in);
 
     public static void main(String[] args) throws FileNotFoundException {
-           MCTS mcts = new MCTS("test.txt");
-           mcts.MCTS_Simulation();
-      /*  System.out.println("*********************************");
+        MCTS mcts = new MCTS("test.txt");
+        mcts.MCTS_Simulation();
+        /*  System.out.println("*********************************");
         System.out.println("------Never On Time Sdn Bhd------");
         System.out.println("*********************************");
         try {

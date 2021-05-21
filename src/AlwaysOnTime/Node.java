@@ -15,7 +15,7 @@ public class Node implements Comparable {
     public Node nextVertex;
     public boolean visited;
     private boolean Site_Dependent;
-    public LinkedList <Node> Unchecked;
+    public LinkedList <Node> Unchecked=new LinkedList();
 
     public Node(int x, int y, int c) {
         id = counter;
