@@ -1,10 +1,8 @@
 package Algorithm;
 
-import AlwaysOnTime.Graph;
-import AlwaysOnTime.Node;
-import AlwaysOnTime.Vehicle;
+import AlwaysOnTime.*;
 import java.io.FileNotFoundException;
-import java.util.ArrayList;
+import java.util.LinkedList;
 
 /**
  *
@@ -18,8 +16,8 @@ public class Greedy extends Graph {
 
     public void GreedySimulation() {
         Reset();
-        ArrayList<Vehicle> Vehicles_List = new ArrayList<>();
-        ArrayList<Node> Remaining_Nodes = new ArrayList<>();
+        LinkedList<Vehicle> Vehicles_List = new LinkedList<>();
+        LinkedList<Node> Remaining_Nodes = new LinkedList<>();
         Node temp = head.nextVertex; //dont need to add warehouse (head)
 
         while (temp != null) { //list of all customer to be visited/ will gradually be removed 

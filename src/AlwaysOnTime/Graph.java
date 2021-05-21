@@ -2,7 +2,7 @@ package AlwaysOnTime;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
-import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.Scanner;
 
 /**
@@ -151,7 +151,7 @@ public class Graph {
         return a;
     }
 
-    public void BasicPrint(ArrayList<Vehicle> Vehicles_List) {
+    public void BasicPrint(LinkedList<Vehicle> Vehicles_List) {
         System.out.println("Tour \nTotal Cost: " + total_cost_path);
         //display all vehicles 
         for (int i = 0; i < Vehicles_List.size(); i++) {
@@ -159,7 +159,7 @@ public class Graph {
         }
     }
 
-    public double CalculateTourCost(ArrayList<Vehicle> Vehicles_List) {
+    public double CalculateTourCost(LinkedList<Vehicle> Vehicles_List) {
         double tourcost = 0;
         for (int i = 0; i < Vehicles_List.size(); i++) {
             tourcost += (Vehicles_List.get(i)).getPath_Cost();

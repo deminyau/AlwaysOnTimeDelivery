@@ -4,11 +4,9 @@ package Algorithm;
  *
  * @author @author Hong Zhao Cheng Chiew Zhe Wei Yau De Min Wong Yu Xuan
  */
-import AlwaysOnTime.Graph;
-import AlwaysOnTime.Node;
-import AlwaysOnTime.Vehicle;
+import AlwaysOnTime.*;
 import java.io.FileNotFoundException;
-import java.util.ArrayList;
+import java.util.LinkedList;
 
 public class ExtraAlgo extends Graph {
 
@@ -17,12 +15,12 @@ public class ExtraAlgo extends Graph {
     }
 
     public void ExtraAlgo() {
-        ArrayList<Vehicle> mincosttour = PredictedPath((double) 2 / 3); //optimal case
+        LinkedList<Vehicle> mincosttour = PredictedPath((double) 2 / 3); //optimal case
         total_cost_path = CalculateTourCost(mincosttour);
 
         for (double i = 50; i < 100; i++) {
             double value = i / (double) 100;
-            ArrayList<Vehicle> temp = PredictedPath(value);
+            LinkedList<Vehicle> temp = PredictedPath(value);
             total_cost_path = CalculateTourCost(mincosttour);
             if (total_cost_path > CalculateTourCost(temp)) {
                 mincosttour = temp;
@@ -33,10 +31,10 @@ public class ExtraAlgo extends Graph {
         BasicPrint(mincosttour);
     }
 
-    public ArrayList<Vehicle> PredictedPath(double z) {
+    public LinkedList<Vehicle> PredictedPath(double z) {
         Reset();
-        ArrayList<Vehicle> Vehicles_List = new ArrayList<>();
-        ArrayList<Node> Remaining_Nodes = new ArrayList<>();
+       LinkedList<Vehicle> Vehicles_List = new LinkedList<>();
+       LinkedList<Node> Remaining_Nodes = new LinkedList<>();
         Node temp = head.nextVertex; //dont need to add warehouse (head)
 
         while (temp != null) {

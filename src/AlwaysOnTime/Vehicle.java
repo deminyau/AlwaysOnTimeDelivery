@@ -4,7 +4,7 @@ package AlwaysOnTime;
  *
  * @author Hong Zhao Cheng Chiew Zhe Wei Yau De Min Wong Yu Xuan
  */
-import java.util.ArrayList;
+
 import java.util.LinkedList;
 
 public class Vehicle {
@@ -95,7 +95,7 @@ public class Vehicle {
     }
 
     //evaluate whether we can add customer to one of the present vehicle
-    public static int PossibleSource(Node destination, ArrayList<Vehicle> a) {
+    public static int PossibleSource(Node destination, LinkedList<Vehicle> a) {
         int index = -1;
         double min = 10000;
 

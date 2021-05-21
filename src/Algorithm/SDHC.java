@@ -1,12 +1,8 @@
 package Algorithm;
 
-import AlwaysOnTime.Graph;
-import AlwaysOnTime.Lorry;
-import AlwaysOnTime.Node;
-import AlwaysOnTime.Vehicle;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.util.ArrayList;
+import AlwaysOnTime.*;
+import java.io.*;
+import java.util.LinkedList;
 import java.util.Scanner;
 
 /**
@@ -51,8 +47,8 @@ public class SDHC extends Graph {
 
     public void SDHCSimulation() {
         Reset();
-        ArrayList<Vehicle> Vehicles_List = new ArrayList<>();
-        ArrayList<Node> Remaining_Nodes = new ArrayList<>();
+        LinkedList<Vehicle> Vehicles_List = new LinkedList<>();
+        LinkedList<Node> Remaining_Nodes = new LinkedList<>();
         Node temp = head.nextVertex; //dont need to add warehouse (head)
 
         while (temp != null) { //list of all customer to be visited/ will gradually be removed 
@@ -61,7 +57,7 @@ public class SDHC extends Graph {
         }
         Vehicle v;
         //if not site dependent, we will use lorry , else use van
-        ArrayList<Node> SD_RemainingNode = getSiteDependent(Remaining_Nodes.toArray());
+        LinkedList<Node> SD_RemainingNode = getSiteDependent(Remaining_Nodes.toArray());
         while (!SD_RemainingNode.isEmpty()) {
             int current = 0;
             v = new Vehicle();
@@ -125,8 +121,8 @@ public class SDHC extends Graph {
         BasicPrint(Vehicles_List);
     }
 
-    public ArrayList<Node> getSiteDependent(Object[] before_cast) {
-        ArrayList<Node> a = new ArrayList<>();
+    public LinkedList<Node> getSiteDependent(Object[] before_cast) {
+        LinkedList<Node> a = new LinkedList<>();
         for (int i = 0; i < before_cast.length; i++) {
             Node temp = (Node) (before_cast[i]);
             if (temp.isSite_Dependent()) {

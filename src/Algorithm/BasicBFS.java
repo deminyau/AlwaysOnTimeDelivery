@@ -1,14 +1,11 @@
 package Algorithm;
 
-import AlwaysOnTime.TreeNode;
-import AlwaysOnTime.Graph;
-import AlwaysOnTime.Node;
-import AlwaysOnTime.Vehicle;
+import AlwaysOnTime.*;
 import java.io.FileNotFoundException;
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Scanner;
+
 
 /**
  *
@@ -218,14 +215,6 @@ public class BasicBFS extends Graph{
         BasicPrint(minTourVehicle);
     }
 
-    public static void BasicPrint(LinkedList<Vehicle> Vehicles_List) {
-        System.out.println("Tour \nTotal Cost: " + MinCost);
-        //display all vehicles 
-        for (int i = 0; i < Vehicles_List.size(); i++) {
-            System.out.println("");
-            System.out.println(Vehicles_List.get(i));
-        }
-    }
     private static double MinCost = Double.MAX_VALUE;
     private static LinkedList<LinkedList<Node>> MinTour = new LinkedList();
 
