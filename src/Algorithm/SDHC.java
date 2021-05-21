@@ -121,7 +121,7 @@ public class SDHC extends Graph {
             Vehicles_List.get(i).addNode(head);
         }
         super.total_cost_path = CalculateTourCost(Vehicles_List);
-        System.out.println("Greedy simulation with added extra features");
+        System.out.println("Greedy simulation with Lorry");
         BasicPrint(Vehicles_List);
     }
 
