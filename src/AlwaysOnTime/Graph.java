@@ -39,7 +39,7 @@ public class Graph {
     }
 
     public Graph(String name) throws FileNotFoundException {
-        Scan(name); AssignAll();
+        Reset(); Scan(name); AssignAll();
     } //input filename
 
     public void Scan(String name) throws FileNotFoundException {
@@ -101,8 +101,7 @@ public class Graph {
         Node temp = head;
         while (temp != null) {
             temp.visited = false;
-            temp = temp.nextVertex;
-        }
+            temp = temp.nextVertex;}
         total_cost_path = 0;
         Vehicle.Resetcounter();
         Node.resetCounter();
@@ -136,7 +135,7 @@ public class Graph {
         return a;
     }
 
-    //this 2 sorted have diff param (overload), so it is ok u keep them same name
+    
     //this sorted() is used by  Greedy, Grp 123 ,SDHC simulation
     //ascending order in distance from one node to another
     public Node[] Sorted(Node source, Object[] before_cast) {

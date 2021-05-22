@@ -28,8 +28,7 @@ public class Node implements Comparable {
     }
     
     public static void resetCounter(){
-        counter = 0;
-    }
+        counter = 0;}
     
     public int compareTo(Object customers) {
         Node customer = (Node) customers;

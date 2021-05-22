@@ -4,9 +4,7 @@ package Algorithm;
  *
  * @author @author Hong Zhao Cheng Chiew Zhe Wei Yau De Min Wong Yu Xuan
  */
-import AlwaysOnTime.Graph;
-import AlwaysOnTime.Node;
-import AlwaysOnTime.Vehicle;
+import AlwaysOnTime.*;
 import java.io.FileNotFoundException;
 import java.util.LinkedList;
 
@@ -30,8 +28,7 @@ public class ExtraAlgo extends Graph {
             }
         }
         System.out.println("Grp123 Simulation (Extra Feature) ");
-        BasicPrint(mincosttour);
-    }
+        BasicPrint(mincosttour);}
 
     public LinkedList<Vehicle> PredictedPath(double z) {
         Reset();

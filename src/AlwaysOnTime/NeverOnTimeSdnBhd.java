@@ -13,9 +13,8 @@ public class NeverOnTimeSdnBhd {
     public static Scanner group123 = new Scanner(System.in);
 
     public static void main(String[] args) throws FileNotFoundException {
-        MCTS mcts = new MCTS("test.txt");
-        mcts.MCTS_Simulation();
-        /*  System.out.println("*********************************");
+    
+        System.out.println("*********************************");
         System.out.println("------Never On Time Sdn Bhd------");
         System.out.println("*********************************");
         try {
@@ -80,7 +79,7 @@ public class NeverOnTimeSdnBhd {
             System.out.println("Exit successfully");
         } catch (FileNotFoundException e) {
             System.out.println("File not found!");
-        }*/
+        }
     }
 
     public static void message1() {
@@ -90,8 +89,8 @@ public class NeverOnTimeSdnBhd {
         System.out.println("3 - MCTS Simulation");
         System.out.println("4 - A* Search Simulation");
         System.out.println("5 - Best First Search Simulation");
-        System.out.println("6 - Conditional Simulation");
-        System.out.println("7 - Simulation with lorry");
+        System.out.println("6 - Grp123 Simulation");
+        System.out.println("7 - Simulation (SiteDependent + Homegenous Capacity)");
         System.out.println("8 - Exit");
         System.out.println("*********************************");
         System.out.println("");

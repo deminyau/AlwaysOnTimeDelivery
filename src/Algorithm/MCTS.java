@@ -35,7 +35,7 @@ public class MCTS extends Graph {
     }
 
     public LinkedList<Vehicle> search(int level, int iterations) {
-        int levels=level-1;//I gues level 3 means level 0,1,2 because I do like this also wont get -1 IndexOutOfBound
+        int levels = level-1;
         double minTourCost = Double.MAX_VALUE;
         LinkedList<Vehicle> besttour = null;
         if (level == 0) {
@@ -61,17 +61,18 @@ public class MCTS extends Graph {
             Vehicle Route = a_tour.get(i);
             LinkedList<Node> Stops = Route.getPathTaken();
             for (int j = 0; j < Stops.size(); j++) {
-                policy[level][j][j + 1] += ALPHA;
+                policy[level][Stops.get(j).getId()][Stops.get(j+1).getId()] += ALPHA;
                 double z = 0.0;
                 Node currentStop = Route.getStops(j);
                 for (int k = 0; k < allStops.length; k++) {
                     if (currentStop.testNode(allStops[k]) && !allStops[k].visited) {
-                        z += Math.exp(globalPolicy[j][k]);
+                        z += Math.exp(globalPolicy[currentStop.getId()][allStops[k].getId()]);
                     }
                 }
                 for (int k = 0; k < allStops.length; k++) {
                     if (currentStop.testNode(allStops[k]) && !allStops[k].visited) {
-                        policy[level][j][k] -= ALPHA * (Math.exp(globalPolicy[j][k]) / z);
+                        policy[level][currentStop.getId()][allStops[k].getId()] -= 
+                                ALPHA * (Math.exp(globalPolicy[currentStop.getId()][allStops[k].getId()]) / z);
                     }
                 }
                 currentStop.visited = true;
@@ -84,7 +85,7 @@ public class MCTS extends Graph {
         Vehicle v = new Vehicle();
         v.addNode(head);
         newTour.add(v);
-
+        
         while (true) {
             LinkedList<Node> remaining = Node.getRemaining(); //return all nodes that are unvisited
             Node currentStop = newTour.get(newTour.size() - 1).LatestDestination();
@@ -114,7 +115,7 @@ public class MCTS extends Graph {
         Double[] probability = new Double[possible_successor.size()];
         double sum = 0;
         for (int i = 0; i < possible_successor.size(); i++) {
-            probability[i] = Math.exp(globalPolicy[currentStop.getId()][i]);
+            probability[i] = Math.exp(globalPolicy[currentStop.getId()][possible_successor.get(i).getId()]);
             sum += probability[i];
         }
         double mrand = new Random().nextDouble() * sum;

@@ -1,9 +1,6 @@
 package Algorithm;
 
-import AlwaysOnTime.Graph;
-import AlwaysOnTime.Lorry;
-import AlwaysOnTime.Node;
-import AlwaysOnTime.Vehicle;
+import AlwaysOnTime.*;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.util.LinkedList;
@@ -16,7 +13,7 @@ import java.util.Scanner;
 public class SDHC extends Graph {
 
     public SDHC(String name) throws FileNotFoundException {
-        Scan(name);
+        Reset(); Scan(name);
     }
 
     public boolean addVertex(int x, int y, int c, boolean s) {
@@ -50,7 +47,7 @@ public class SDHC extends Graph {
     }
 
     public void SDHCSimulation() {
-        Reset();
+  
         LinkedList<Vehicle> Vehicles_List = new LinkedList<>();
         LinkedList<Node> Remaining_Nodes = new LinkedList<>();
         Node temp = head.nextVertex; //dont need to add warehouse (head)
@@ -121,7 +118,7 @@ public class SDHC extends Graph {
             Vehicles_List.get(i).addNode(head);
         }
         super.total_cost_path = CalculateTourCost(Vehicles_List);
-        System.out.println("Greedy simulation with Lorry");
+        System.out.println("Greedy simulation added with extra features");
         BasicPrint(Vehicles_List);
     }
 

@@ -4,10 +4,7 @@ package Algorithm;
  *
  * @author @author Hong Zhao Cheng Chiew Zhe Wei Yau De Min Wong Yu Xuan
  */
-import AlwaysOnTime.Graph;
-import AlwaysOnTime.Node;
-import AlwaysOnTime.Vehicle;
-import static AlwaysOnTime.Graph.Euclidean;
+import AlwaysOnTime.*;
 import java.io.FileNotFoundException;
 import java.util.LinkedList;
 
@@ -19,7 +16,6 @@ public class Best_First extends Graph {
     }
 
     public void BFirstSimulation() {
-        Reset();
         LinkedList<Vehicle> Vehicles_List = new LinkedList<>();
         LinkedList<Node> Remaining_Nodes = new LinkedList<>();
         Node temp = head.nextVertex; //dont need to add warehouse (head)
