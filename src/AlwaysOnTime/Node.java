@@ -13,7 +13,8 @@ public class Node implements Comparable {
     private static int counter = 0;
     private int id;
     public Node nextVertex;
-    public boolean visited;
+    public boolean checked=false;
+    public boolean visited=false;
     private boolean Site_Dependent;
     public LinkedList <Node> Unchecked=new LinkedList();
 
@@ -44,15 +45,19 @@ public class Node implements Comparable {
         nextVertex = null;
         visited = false;
         Site_Dependent = s;
-        assignUnchecked();
     }
     
-    public void assignUnchecked (){
-            for (int i = 0; i< Graph.allCustomers.size() ; i++){
-                Node temp = Graph.allCustomers.get(i);
-                if (this.capacity + temp.getCapacity() <= Vehicle.getMax_Capacity()) {
-                    Unchecked.add(temp);}}}
-
+    public void assignUnchecked(Vehicle route) {
+        LinkedList<Node> lastRoute = route.getPathTaken();
+        Unchecked.clear();
+        for (int i = 0; i < Graph.allCustomers.size(); i++) {
+            Node temp = Graph.allCustomers.get(i);
+            if (!checked&&temp.capacity + route.Capacity <= Vehicle.getMax_Capacity()&&!lastRoute.contains(temp)&&temp.getId()!=0) {
+                Unchecked.add(temp);
+            }
+        }
+    }
+    
     public int getX() {
         return coordinates[0];
     }
@@ -84,12 +89,16 @@ public class Node implements Comparable {
         return (this.capacity + a.capacity) <= Vehicle.getMax_Capacity();}
     
     
-     public static LinkedList <Node> getRemaining(){
-        LinkedList <Node> answer = new LinkedList<>();
-       for (int i = 0; i< Graph.allCustomers.size() ; i++){
-                Node temp = Graph.allCustomers.get(i);
-                if (!temp.visited) answer.add(temp);}
-       return answer;}   
+     public static LinkedList<Node> getRemaining() {
+        LinkedList<Node> answer = new LinkedList<>();
+        for (int i = 0; i < Graph.allCustomers.size(); i++) {
+            Node temp = Graph.allCustomers.get(i);
+            if (!temp.visited && temp.getId() != 0) {
+                answer.add(temp);
+            }
+        }
+        return answer;
+    }   
      
   
 }
