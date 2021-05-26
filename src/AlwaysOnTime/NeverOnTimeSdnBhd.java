@@ -44,8 +44,8 @@ public class NeverOnTimeSdnBhd {
 
                 } else if (choice == 3) {
 
-                    //MCTS mcts = new MCTS(filename);
-                    //mcts.MCTS_Simulation;
+                    MCTS mcts = new MCTS(filename);
+                    mcts.MCTS_Simulation();
                     System.out.println("-----------------------------");
 
                 } else if (choice == 4) {

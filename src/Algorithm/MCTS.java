@@ -45,7 +45,7 @@ public class MCTS extends Graph {
             policy[levels] = globalPolicy;
             for (int i = 0; i < iterations; i++) {
                 LinkedList<Vehicle> newtour = search(level - 1, iterations);
-                if (CalculateTourCost(newtour) < minTourCost) {
+                if (CalculateTourCost(newtour) < minTourCost &&CompleteTour(newtour)) {
                     minTourCost = CalculateTourCost(newtour);
                     besttour = newtour;
                     adapt(besttour, levels);
