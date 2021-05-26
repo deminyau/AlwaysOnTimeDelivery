@@ -16,7 +16,7 @@ public class Node implements Comparable {
     public boolean checked=false;
     public boolean visited=false;
     private boolean Site_Dependent;
-    public LinkedList <Node> Unchecked=new LinkedList();
+    //public LinkedList <Node> Unchecked=new LinkedList();
 
     public Node(int x, int y, int c) {
         id = counter;
@@ -25,7 +25,6 @@ public class Node implements Comparable {
         coordinates[1] = y;
         capacity = c;
         nextVertex = null;
-        visited = false;
     }
     
     public static void resetCounter(){
@@ -43,11 +42,10 @@ public class Node implements Comparable {
         coordinates[1] = y;
         capacity = c;
         nextVertex = null;
-        visited = false;
         Site_Dependent = s;
     }
     
-    public void assignUnchecked(Vehicle route) {
+    /*public void assignUnchecked(Vehicle route) {
         LinkedList<Node> lastRoute = route.getPathTaken();
         Unchecked.clear();
         for (int i = 0; i < Graph.allCustomers.size(); i++) {
@@ -56,7 +54,7 @@ public class Node implements Comparable {
                 Unchecked.add(temp);
             }
         }
-    }
+    }*/
     
     public int getX() {
         return coordinates[0];

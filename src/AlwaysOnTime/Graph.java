@@ -166,8 +166,6 @@ public class Graph {
 
     public double CalculateTourCost(LinkedList<Vehicle> Vehicles_List) {
         double tourcost = 0;
-        if(Vehicles_List==null)
-            return Double.MAX_VALUE;
         for (int i = 0; i < Vehicles_List.size(); i++) {
             tourcost += (Vehicles_List.get(i)).getPath_Cost();
         }
