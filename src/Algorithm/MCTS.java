@@ -58,6 +58,24 @@ public class MCTS extends Graph {
         return besttour;
     }
 
+    private boolean CompleteTour(LinkedList<Vehicle> newtour){
+        boolean [] added=new boolean[Graph.Number_of_customer];
+        LinkedList<Node> customers=Graph.allCustomers;
+        for(int i=0;i<Graph.Number_of_customer;i++){
+            for(Vehicle v:newtour){
+                LinkedList<Node> path=v.getPathTaken();
+                if(path.contains(customers.get(i))){
+                    added[i]=true;
+                    break;
+                }
+            }
+        }
+        for(boolean a:added){
+            if(a==false)
+                return false;
+        }
+        return true;
+    }
     public void adapt(LinkedList<Vehicle> a_tour, int level) {//a_tour, level
 
         for (int i = 0; i < a_tour.size(); i++) {
