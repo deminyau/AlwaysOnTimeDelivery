@@ -29,6 +29,7 @@ public class MCTS extends Graph {
     }
 
     public void MCTS_Simulation() {
+        Reset();
         LinkedList<Vehicle> answer = search(level, iterations);
         System.out.println("MCTS simulation");
         BasicPrint(answer);
@@ -49,9 +50,11 @@ public class MCTS extends Graph {
                     besttour = newtour;
                     adapt(besttour, levels);
                 }
+                //need to add here if processing_time exceed time limit, return besttour
             }
             globalPolicy = policy[levels];
         }
+        total_cost_path=minTourCost;
         return besttour;
     }
 
@@ -60,7 +63,7 @@ public class MCTS extends Graph {
         for (int i = 0; i < a_tour.size(); i++) {
             Vehicle Route = a_tour.get(i);
             LinkedList<Node> Stops = Route.getPathTaken();
-            for (int j = 0; j < Stops.size(); j++) {
+            for (int j = 0; j < Stops.size()-1; j++) {
                 policy[level][Stops.get(j).getId()][Stops.get(j+1).getId()] += ALPHA;
                 double z = 0.0;
                 Node currentStop = Route.getStops(j);
@@ -79,8 +82,74 @@ public class MCTS extends Graph {
             }
         }
     }
-
     public LinkedList<Vehicle> rollout() {
+        Vehicle.Resetcounter();
+        LinkedList<Vehicle> newTour = new LinkedList<>();
+        Vehicle v = new Vehicle();
+        v.addNode(head);
+        newTour.add(v);
+        
+        while (true) {
+            Node currentStop=newTour.get(newTour.size() - 1).LatestDestination();
+            LinkedList<Node> Possible=new LinkedList<>();
+            Vehicle currentV= newTour.get(newTour.size() - 1);
+            //find every possible successors that is not yet checked for the currentStop
+            for(int i=0;i<Graph.getNumber_of_customer();i++){
+                Node temp=Graph.allCustomers.get(i);
+                if(temp.getId()==0)
+                    continue;
+                if(!RepeatedNode(temp,newTour)&&currentV.TestNode(temp)&&temp.checked==false){
+                    Possible.add(temp);
+                }
+            }
+            if(Possible.isEmpty()){
+                newTour.get(newTour.size() - 1).addNode(head);
+                if(AllStopsVisited())//all stops visited
+                    break;
+                Vehicle vehicle = new Vehicle();
+                vehicle.addNode(head);
+                newTour.add(vehicle);
+                for(Node node:Graph.allCustomers){
+                    if(node.getId()==0){
+                        continue;
+                    }
+                    node.checked=false;
+                    if(!RepeatedNode(node,newTour)){
+                        node.visited=false;
+                    }
+                }
+                continue;
+            }
+            Node nextStop = select_next_move(currentStop, Possible);
+            if(!RepeatedNode(nextStop,newTour)&&newTour.get(newTour.size() - 1).TestNode(nextStop)){
+                newTour.get(newTour.size() - 1).addNode(nextStop);
+                nextStop.visited=true;
+            }
+            else
+                nextStop.checked=true;
+        }
+        return newTour;
+    }
+    public boolean AllStopsVisited(){
+        for(Node node:Graph.allCustomers){
+            if(node.getId()==0)
+                continue;
+            else{
+                if(!node.visited)
+                    return false;
+            }      
+        }
+        return true;
+    }
+    public boolean RepeatedNode(Node node,LinkedList<Vehicle> newTour){
+        for(Vehicle v:newTour){
+            LinkedList<Node> route= v.getPathTaken();
+            if(route.contains(node))
+                return true;
+        }
+        return false;
+    }
+    /*public LinkedList<Vehicle> rollout() {
         LinkedList<Vehicle> newTour = new LinkedList<>();
         Vehicle v = new Vehicle();
         v.addNode(head);
@@ -89,9 +158,10 @@ public class MCTS extends Graph {
         while (true) {
             LinkedList<Node> remaining = Node.getRemaining(); //return all nodes that are unvisited
             Node currentStop = newTour.get(newTour.size() - 1).LatestDestination();
-            if (currentStop.Unchecked.isEmpty()) {
+            currentStop.assignUnchecked(newTour.get(newTour.size() - 1));
+            if (currentStop.Unchecked.isEmpty()) {//Error: Never come in
                 newTour.get(newTour.size() - 1).addNode(head);
-                if (remaining.isEmpty()) {
+                if (remaining.isEmpty()) {//Problem
                     break;
                 } else {
                     Vehicle v1 = new Vehicle();
@@ -101,16 +171,17 @@ public class MCTS extends Graph {
                 }
             }
             Node nextStop = select_next_move(currentStop, currentStop.Unchecked);
-            if (newTour.get(newTour.size() - 1).TestNode(nextStop)) {
-                newTour.get(newTour.size() - 1).addNode(nextStop);
+            if (newTour.get(newTour.size() - 1).TestNode(nextStop)&&!RepeatedNode(nextStop,newTour)) {//Error
+                newTour.get(newTour.size() - 1).addNode(nextStop);//Error: never come in
                 nextStop.visited = true;
             } else {
                 currentStop.Unchecked.remove(nextStop);
+                nextStop.checked=true;
             }
         }
         return newTour;
-    }
-
+    }*/
+    
     public Node select_next_move(Node currentStop, LinkedList<Node> possible_successor) {
         Double[] probability = new Double[possible_successor.size()];
         double sum = 0;
