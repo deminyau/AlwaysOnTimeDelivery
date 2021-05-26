@@ -170,7 +170,14 @@ public class BasicBFS extends Graph {
         return sum;
     }
 
+    public boolean checkTimer(int Number_of_customer) {
+        return Number_of_customer < 10;
+    }
+
     public void BasicSimulation(LinkedList<LinkedList<Node>> List, LinkedList<Node> customers) {
+        int timer = 0;
+        String str = "Time Elapsed: |";
+
         for (int i = 0; i < List.size(); i++) {
             LinkedList<Node> MustUse = List.get(i);
             LinkedList<LinkedList<Node>> PossibleList = new LinkedList();
@@ -189,6 +196,13 @@ public class BasicBFS extends Graph {
             TreeNode<LinkedList<Node>> RootRoute = ConstructRouteTree(MustUse, PossibleList, customers);
             FindMinTour(RootRoute, customers);
         }
+        if (checkTimer(Number_of_customer)) {
+            for (int i = 0; i < 50; i++) {
+                str += " ";
+            }
+            str = str + "| " + timer + "s ";
+        }
+        System.out.println(str);
         Vehicle.Resetcounter();
         LinkedList<Vehicle> minTourVehicle = new LinkedList();
         for (LinkedList<Node> route : MinTour) {
