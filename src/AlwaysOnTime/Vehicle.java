@@ -97,17 +97,18 @@ public class Vehicle {
     public static int PossibleSource(Node destination, LinkedList<Vehicle> a) {
         int index = -1;
         double min = 10000;
-
+        //Evaluate through the list of vehicles to determine ideal vehicle to add this node
         for (int i = 0; i < a.size(); i++) {
             if (a.get(i).TestNode(destination)) {
-
+                 //compare the distance between the latest destination of each vehicles with this customer
+                 //ideal vehicle should have the shortest distance between its latest node and this node  
                 if (Graph.Euclidean(destination, a.get(i).LatestDestination()) < min) {
                     min = Graph.Euclidean(destination, a.get(i).LatestDestination());
                     index = i;
                 }
             }
         }
-        //none of the vehicle can accomodate this customer
+        //none of the vehicle can accomodate this customer, return -1
         return index;
     }
 

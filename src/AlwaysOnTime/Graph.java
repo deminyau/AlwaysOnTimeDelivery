@@ -16,7 +16,7 @@ public class Graph {
     protected double total_cost_path;
     public static LinkedList<Node> allCustomers = new LinkedList<>();
 
-    public void AssignAll() {
+    public void AssignAll() { //method to add all nodes (customers) into a linked list
         allCustomers.clear();
         Node temp = head;
         while (temp != null) {
@@ -43,7 +43,7 @@ public class Graph {
     }
 
     public Graph(String name) throws FileNotFoundException {
-        Reset();
+        Reset(); //reset all static field in various class before a simulation
         Scan(name);
         AssignAll();
     } //input filename
@@ -51,12 +51,13 @@ public class Graph {
     public void Scan(String name) throws FileNotFoundException {
         Scanner sc = new Scanner(new FileInputStream(name));
         String temp = sc.nextLine();   //first line of input
-        String[] tokens = temp.split(" ");
-        Number_of_customer = Integer.parseInt(tokens[0]);
-        Vehicle.setMax_Capacity(Integer.parseInt(tokens[1]));
-        int size = 0; //to see the size added is equal to text file
+        String[] tokens = temp.split(" "); 
+        //line 0 input consist of Number of customer + Vehicle Max Capacity 
+        Number_of_customer = Integer.parseInt(tokens[0]); 
+        Vehicle.setMax_Capacity(Integer.parseInt(tokens[1])); 
+        int size = 0; //to get the number of lines (Number of customers + depot)
         while (sc.hasNextLine()) { //input with information of nodes
-            size++;
+            size ++;
             temp = sc.nextLine();
             tokens = temp.split(" ");
             addVertex(Integer.parseInt(tokens[0]), Integer.parseInt(tokens[1]), Integer.parseInt(tokens[2]));
@@ -104,19 +105,19 @@ public class Graph {
         return temp;
     }
 
-    public void Reset() { //reset all visited = false; for diff simulation
+    public void Reset() { 
         Node temp = head;
         while (temp != null) {
-            temp.visited = false;
+            temp.visited = false; //reset all visited = false; 
             temp = temp.nextVertex;
-        }
+        } //all static field are reset to default
         total_cost_path = 0;
         Vehicle.Resetcounter();
         Node.resetCounter();
     }
 
     public int getCapacityNeeded() {
-        int total = 0;
+        int total = 0; //method to get total capacity of the all nodes 
         Node temp = head;
         while (temp != null) {
             total += temp.getCapacity();
@@ -126,12 +127,12 @@ public class Graph {
     }
 
     //this sorted() is only used by Grp 123Algo (Algo by Group123) simulation 
-    public Node[] Sorted(Object[] before_cast) { //sort descending order Capacity
+    public Node[] Sorted(Object[] before_cast) { //sort Node array descending order Capacity
         Node[] a = new Node[before_cast.length];
         for (int i = 0; i < before_cast.length; i++) {
             a[i] = (Node) (before_cast[i]);
         }
-        for (int pass = 0; pass < a.length - 1; pass++) { //sort array in descending order
+        for (int pass = 0; pass < a.length - 1; pass++) { //sort Node array in descending order
             for (int i = 0; i < a.length - 1 - pass; i++) {
                 if (a[i].getCapacity() < a[i + 1].getCapacity()) {
                     Node temp = a[i];
@@ -172,6 +173,7 @@ public class Graph {
     }
 
     public double CalculateTourCost(LinkedList<Vehicle> Vehicles_List) {
+        // give a list of vehicle, calculate the total tour cost
         double tourcost = 0;
         for (int i = 0; i < Vehicles_List.size(); i++) {
             tourcost += (Vehicles_List.get(i)).getPath_Cost();
@@ -179,17 +181,7 @@ public class Graph {
         return tourcost;
     }
 
-    public LinkedList<Node> getPossibleSuccessor(Node a) {
-        LinkedList<Node> answer = new LinkedList<>();
-        Node temp = head;
-        while (temp != null) {
-            if (a.getCapacity() + temp.getCapacity() < Vehicle.getMax_Capacity()) {
-                answer.add(temp);
-            }
-            temp = temp.nextVertex;
-        }
-        return answer;
-    }
+ 
     
     public String timer(){//timer for fast simulation
         int timer = 0;

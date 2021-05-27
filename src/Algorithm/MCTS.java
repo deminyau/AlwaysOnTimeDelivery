@@ -44,8 +44,8 @@ public class MCTS extends Graph {
             BasicPrint(answer);
             System.out.println("");
         } else {
-            System.out.println(timer());
             LinkedList<Vehicle> answer = search(level, iterations);
+            System.out.println(timer());
             System.out.println("MCTS simulation");
             BasicPrint(answer);
             System.out.println("");

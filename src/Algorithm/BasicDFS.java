@@ -173,6 +173,7 @@ public class BasicDFS extends Graph {
 
     public void BasicSimulation(LinkedList<LinkedList<Node>> List, LinkedList<Node> customers) {
         long start = System.currentTimeMillis();
+        long end = start + 50 * 1000; //set time limit for many customers
         outermost:
         for (int i = 0; i < List.size(); i++) {
             LinkedList<Node> MustUse = List.get(i);
@@ -189,12 +190,13 @@ public class BasicDFS extends Graph {
                 }
             }
             //At this moment, I have a must use route and all other possible routes that can combine with this route
+             if (System.currentTimeMillis() > end) {
+                break outermost;} //it is possible the 60 sec time limit is insufficient to even finish constructing a tree, 
+             //thus will get null, to see final result, remove this if statement and wait patiently for the output
             TreeNode<LinkedList<Node>> RootRoute = ConstructRouteTree(MustUse, PossibleList, customers);
             FindMinTour(RootRoute, customers);
-            long end = start + 5 * 1000;//set time limit for many customers
-            if (System.currentTimeMillis() > end) {
-                break outermost;
-            }
+           
+
         }
         Vehicle.Resetcounter();
         LinkedList<Vehicle> minTourVehicle = new LinkedList();

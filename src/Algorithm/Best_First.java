@@ -10,7 +10,7 @@ import java.util.LinkedList;
 
 public class Best_First extends Graph {
 
-    // use distance from warehouse to customer     
+    // use distance from warehouse (goal) to customer     
     public Best_First(String name) throws FileNotFoundException {
         super(name);
     }
@@ -53,8 +53,8 @@ public class Best_First extends Graph {
         BasicPrint(Vehicles_List);
         System.out.println("");
     }
-    // this sorted method overides the 1 param sorted method in parent class (Graph) - sort according to nearest distance from depot
-
+    // this sorted method overides the 1 param sorted method in parent class (Graph)  
+    // sort according to nearest distance from depot
     @Override
     public Node[] Sorted(Object[] before_cast) {
         Node[] a = new Node[before_cast.length];

@@ -20,7 +20,8 @@ public class Greedy extends Graph {
         LinkedList<Node> Remaining_Nodes = new LinkedList<>();
         Node temp = head.nextVertex; //dont need to add warehouse (head)
 
-        while (temp != null) { //list of all customer to be visited/ will gradually be removed 
+        while (temp != null) { 
+        //list of all customer to be visited which will gradually be removed 
             Remaining_Nodes.add(temp);
             temp = temp.nextVertex;
         }

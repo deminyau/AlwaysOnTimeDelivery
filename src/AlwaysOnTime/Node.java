@@ -73,11 +73,13 @@ public class Node implements Comparable {
         return answer;
     }
 
-    public boolean testNode(Node a) {
+    public boolean testNode(Node a) { //used in mcts
+    // determine whether a node can be added to a vehicle with this node 
         return (this.capacity + a.capacity) <= Vehicle.getMax_Capacity();
     }
 
     public static LinkedList<Node> getRemaining() {
+        //return a list of customer which are not visited
         LinkedList<Node> answer = new LinkedList<>();
         for (int i = 0; i < Graph.allCustomers.size(); i++) {
             Node temp = Graph.allCustomers.get(i);

@@ -13,7 +13,6 @@ public class NeverOnTimeSdnBhd {
     public static Scanner group123 = new Scanner(System.in);
 
     public static void main(String[] args) throws FileNotFoundException, InterruptedException {
-
         System.out.println("*********************************");
         System.out.println("------Never On Time Sdn Bhd------");
         System.out.println("*********************************");
@@ -33,7 +32,7 @@ public class NeverOnTimeSdnBhd {
 
                 if (choice == 1) {
 
-                    BasicDFS bfs = new BasicDFS(filename);
+                    BasicDFS dfs = new BasicDFS(filename);
                     System.out.println("-----------------------------");
 
                 } else if (choice == 2) {

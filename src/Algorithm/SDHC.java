@@ -19,7 +19,7 @@ public class SDHC extends Graph {
 
     public boolean addVertex(int x, int y, int c, boolean s) {
         Node temp = head;
-        Node newNode = new Node(x, y, c, s); //info and next vertex (null)
+        Node newNode = new Node(x, y, c, s); //extra field s store boolean (site dependency)
         if (head == null) {
             head = newNode;
         } else {
@@ -59,12 +59,13 @@ public class SDHC extends Graph {
         }
         Vehicle v;
         //if not site dependent, we will use lorry , else use van
+        //list of remaining site dependent customer
         LinkedList<Node> SD_RemainingNode = getSiteDependent(Remaining_Nodes.toArray());
         while (!SD_RemainingNode.isEmpty()) {
             int current = 0;
             v = new Vehicle();
             v.addNode(head);
-            while (true) { //add all customers that is site dependent
+            while (true) { //service all customers that is site dependent
                 Node[] choice = Sorted(getNode(current), SD_RemainingNode.toArray());
                 boolean added = false;
                 for (int i = 0; i < choice.length; i++) {
@@ -84,7 +85,7 @@ public class SDHC extends Graph {
             }
             Vehicles_List.add(v);
         }
-        //all site dependent is done now we use lorry / present car 
+        //all site dependent customer is serviced now we use lorry / present vehicle to service remaning customers 
 
         while (!Remaining_Nodes.isEmpty()) {
             int current = 0;
@@ -98,14 +99,14 @@ public class SDHC extends Graph {
                 Node[] choice = Sorted(getNode(current), Remaining_Nodes.toArray());
                 int index = Vehicle.PossibleSource(choice[0], Vehicles_List);
                 //only for small demand customer can use vehicle else use lorry
-
-                if (choice[0].getCapacity() > Vehicle.getMax_Capacity() / 2) { //high demand customer
+                //if customer demand is more than 1/2 capacity classify as high demand customer
+                if (choice[0].getCapacity() > Vehicle.getMax_Capacity() / 2) { //high demand customer must use Lorry
                     if (!L.TestNode(choice[0])) {
                         break;
                     } else {
                         Vehicles_List.get(Vehicles_List.size() - 1).addNode(choice[0]);
                     }
-                } else if (index > -1) {
+                } else if (index > -1) { //not high demand customer can be added to any present transport
                     Vehicles_List.get(index).addNode(choice[0]);
                 } else {
                     break; //lorry capacity not enough 

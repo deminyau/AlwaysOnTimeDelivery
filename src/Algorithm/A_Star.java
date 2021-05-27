@@ -19,9 +19,10 @@ public class A_Star extends Graph {
         long start = System.currentTimeMillis();
         LinkedList<Vehicle> Vehicles_List = new LinkedList<>();
         LinkedList<Node> Remaining_Nodes = new LinkedList<>();
-        Node temp = head.nextVertex; //dont need to add warehouse (head)
+        Node temp = head.nextVertex; //exclude depot (head)
 
-        while (temp != null) { //list of all customer to be visited/ will gradually be removed 
+        while (temp != null) { 
+        //list of all customer to be visited/ will gradually be removed 
             Remaining_Nodes.add(temp);
             temp = temp.nextVertex;
         }
@@ -43,7 +44,7 @@ public class A_Star extends Graph {
                 boolean added = false;
                 for (int i = 0; i < choice.length; i++) {
                     if (!v.TestNode(choice[i])) {
-                        continue;
+                        continue; //capacity of this potential customer violates the rules, skip to next closest customer
                     }
                     v.addNode(choice[i]);              //add customer to vehicle path 
                     Remaining_Nodes.remove(choice[i]); //this customer is serviced
@@ -69,8 +70,9 @@ public class A_Star extends Graph {
         BasicPrint(Vehicles_List);
         System.out.println("");
     }
-    //this sorted() is used uniquely by A* simulation because it takes into account the distance from current node to goal (warehouse)
-
+    
+    //this sorted() is used uniquely by A* simulation because it takes into account 
+    //the distance from current node to goal (warehouse)
     @Override
     public Node[] Sorted(Node source, Object[] before_cast) {
         Node[] a = new Node[before_cast.length];
@@ -79,7 +81,8 @@ public class A_Star extends Graph {
         } //cast one by one since cannot cast all at once
 
         for (int pass = 0; pass < a.length - 1; pass++) { //sort array in ascending order of closest distance
-            for (int i = 0; i < a.length - 1 - pass; i++) { //cost from one node to another + cost from the node from depot (cost so far)
+            for (int i = 0; i < a.length - 1 - pass; i++) { 
+                //cost from one node to another + cost from the node from depot (cost so far)
                 if (Euclidean(source, a[i]) + Euclidean(head, a[i])
                         > Euclidean(source, a[i + 1]) + Euclidean(head, a[i + 1])) {
                     Node temp = a[i];
