@@ -110,19 +110,17 @@ public class Vehicle {
         //none of the vehicle can accomodate this customer
         return index;
     }
-    
-    
-    public Node getStops (int i ){
-        return PathTaken.get(i);}
 
+    public Node getStops(int i) {
+        return PathTaken.get(i);
+    }
 
     public String toString() {
         String answer = "Vehicle " + Vehicle_ID;
         answer += "\n" + Description;
         answer += "\nCapacity:" + Capacity;
         answer += "\nCost: " + Path_Cost;
-        return answer;}
-    
-   
+        return answer;
+    }
 
 }

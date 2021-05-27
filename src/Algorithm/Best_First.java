@@ -16,6 +16,7 @@ public class Best_First extends Graph {
     }
 
     public void BFirstSimulation() {
+        long start = System.currentTimeMillis();
         LinkedList<Vehicle> Vehicles_List = new LinkedList<>();
         LinkedList<Node> Remaining_Nodes = new LinkedList<>();
         Node temp = head.nextVertex; //dont need to add warehouse (head)
@@ -44,8 +45,13 @@ public class Best_First extends Graph {
         } //next vehicle end while
 
         total_cost_path = CalculateTourCost(Vehicles_List);
+        long end = start + 60 * 1000;//set time limit 
+        if (System.currentTimeMillis() < end) {
+            System.out.println(timer());
+        }
         System.out.println("Best First simulation");
         BasicPrint(Vehicles_List);
+        System.out.println("");
     }
     // this sorted method overides the 1 param sorted method in parent class (Graph) - sort according to nearest distance from depot
 

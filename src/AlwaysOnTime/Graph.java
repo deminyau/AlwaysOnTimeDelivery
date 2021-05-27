@@ -14,15 +14,19 @@ public class Graph {
     public Node head;
     protected static int Number_of_customer;
     protected double total_cost_path;
-    public static LinkedList <Node> allCustomers = new LinkedList<>();
-            
-    public void AssignAll(){
+    public static LinkedList<Node> allCustomers = new LinkedList<>();
+
+    public void AssignAll() {
+        allCustomers.clear();
         Node temp = head;
-        while (temp!= null){
+        while (temp != null) {
             allCustomers.add(temp);
-            temp = temp.nextVertex;}}
-   
-    public Graph() {}
+            temp = temp.nextVertex;
+        }
+    }
+
+    public Graph() {
+    }
 
     public boolean addVertex(int x, int y, int c) {
         Node temp = head;
@@ -39,7 +43,9 @@ public class Graph {
     }
 
     public Graph(String name) throws FileNotFoundException {
-        Reset(); Scan(name); AssignAll();
+        Reset();
+        Scan(name);
+        AssignAll();
     } //input filename
 
     public void Scan(String name) throws FileNotFoundException {
@@ -90,8 +96,9 @@ public class Graph {
     public Node getNode(int index) {
         Node temp = head;
         for (int i = 0; i < index; i++) {
-            if(temp.getId()==index)
+            if (temp.getId() == index) {
                 return temp;
+            }
             temp = temp.nextVertex;
         }
         return temp;
@@ -101,7 +108,8 @@ public class Graph {
         Node temp = head;
         while (temp != null) {
             temp.visited = false;
-            temp = temp.nextVertex;}
+            temp = temp.nextVertex;
+        }
         total_cost_path = 0;
         Vehicle.Resetcounter();
         Node.resetCounter();
@@ -135,7 +143,6 @@ public class Graph {
         return a;
     }
 
-    
     //this sorted() is used by  Greedy, Grp 123 ,SDHC simulation
     //ascending order in distance from one node to another
     public Node[] Sorted(Node source, Object[] before_cast) {
@@ -172,14 +179,25 @@ public class Graph {
         return tourcost;
     }
 
-     public LinkedList <Node> getPossibleSuccessor(Node a){
-       LinkedList <Node> answer = new LinkedList<>();
-       Node temp = head;
-       while (temp != null){
-           if (a.getCapacity() + temp.getCapacity() < Vehicle.getMax_Capacity())
-               answer.add(temp);
-           temp = temp.nextVertex;}
-       return answer;}
+    public LinkedList<Node> getPossibleSuccessor(Node a) {
+        LinkedList<Node> answer = new LinkedList<>();
+        Node temp = head;
+        while (temp != null) {
+            if (a.getCapacity() + temp.getCapacity() < Vehicle.getMax_Capacity()) {
+                answer.add(temp);
+            }
+            temp = temp.nextVertex;
+        }
+        return answer;
+    }
     
-    
+    public String timer(){//timer for fast simulation
+        int timer = 0;
+        String str = "Time Elapsed: |";
+        for (int i = 0; i < 60; i++) {
+            str += " ";
+        }
+        str = str + "| " + timer + "s ";
+        return str;
+    }
 }

@@ -12,8 +12,8 @@ public class NeverOnTimeSdnBhd {
 
     public static Scanner group123 = new Scanner(System.in);
 
-    public static void main(String[] args) throws FileNotFoundException {
-    
+    public static void main(String[] args) throws FileNotFoundException, InterruptedException {
+
         System.out.println("*********************************");
         System.out.println("------Never On Time Sdn Bhd------");
         System.out.println("*********************************");
@@ -26,14 +26,14 @@ public class NeverOnTimeSdnBhd {
             //System.out.print("Enter choice to be proceed: ");
             do {
 
-                System.out.print("Enter choice to be proceed: ");
+                System.out.print("Enter choice to proceed: ");
                 choice = group123.nextInt();
                 System.out.println("-----------------------------");
                 System.out.println("");
 
                 if (choice == 1) {
 
-                    BasicBFS bfs = new BasicBFS(filename);
+                    BasicDFS bfs = new BasicDFS(filename);
                     System.out.println("-----------------------------");
 
                 } else if (choice == 2) {
@@ -93,6 +93,6 @@ public class NeverOnTimeSdnBhd {
         System.out.println("7 - Simulation (SiteDependent + Homegenous Capacity)");
         System.out.println("8 - Exit");
         System.out.println("*********************************");
-        System.out.println("");
+        System.out.println("-----------------------------");
     }
 }

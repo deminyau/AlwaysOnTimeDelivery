@@ -16,6 +16,7 @@ public class A_Star extends Graph {
     }
 
     public void AStarSimulation() {
+        long start = System.currentTimeMillis();
         LinkedList<Vehicle> Vehicles_List = new LinkedList<>();
         LinkedList<Node> Remaining_Nodes = new LinkedList<>();
         Node temp = head.nextVertex; //dont need to add warehouse (head)
@@ -58,10 +59,15 @@ public class A_Star extends Graph {
             v.addNode(head); // back to warehouse
             Vehicles_List.add(v);
         } //next vehicle end while
-
+        
         total_cost_path = CalculateTourCost(Vehicles_List);
+        long end = start + 60 * 1000;//set time limit 
+        if (System.currentTimeMillis() < end) {
+            System.out.println(timer());
+        }
         System.out.println("A* simulation");
         BasicPrint(Vehicles_List);
+        System.out.println("");
     }
     //this sorted() is used uniquely by A* simulation because it takes into account the distance from current node to goal (warehouse)
 

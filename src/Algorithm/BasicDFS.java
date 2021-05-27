@@ -10,9 +10,9 @@ import java.util.LinkedList;
  *
  * @author @author Hong Zhao Cheng Chiew Zhe Wei Yau De Min Wong Yu Xuan
  */
-public class BasicBFS extends Graph {
+public class BasicDFS extends Graph {
 
-    public BasicBFS(String filename) throws FileNotFoundException {
+    public BasicDFS(String filename) throws FileNotFoundException {
         //long timestart = 0;
         super(filename);
         LinkedList<Node> customers = new LinkedList();
@@ -38,6 +38,7 @@ public class BasicBFS extends Graph {
             }
         }
         BasicSimulation(RouteList, RootNodesList);
+        System.out.println("");
     }
 
     public static int HighestNode(LinkedList<Node> customers, int maxcapacity) {
@@ -170,14 +171,9 @@ public class BasicBFS extends Graph {
         return sum;
     }
 
-    public boolean checkTimer(int Number_of_customer) {
-        return Number_of_customer < 10;
-    }
-
     public void BasicSimulation(LinkedList<LinkedList<Node>> List, LinkedList<Node> customers) {
-        int timer = 0;
-        String str = "Time Elapsed: |";
-
+        long start = System.currentTimeMillis();
+        outermost:
         for (int i = 0; i < List.size(); i++) {
             LinkedList<Node> MustUse = List.get(i);
             LinkedList<LinkedList<Node>> PossibleList = new LinkedList();
@@ -195,14 +191,11 @@ public class BasicBFS extends Graph {
             //At this moment, I have a must use route and all other possible routes that can combine with this route
             TreeNode<LinkedList<Node>> RootRoute = ConstructRouteTree(MustUse, PossibleList, customers);
             FindMinTour(RootRoute, customers);
-        }
-        if (checkTimer(Number_of_customer)) {
-            for (int i = 0; i < 50; i++) {
-                str += " ";
+            long end = start + 5 * 1000;//set time limit for many customers
+            if (System.currentTimeMillis() > end) {
+                break outermost;
             }
-            str = str + "| " + timer + "s ";
         }
-        System.out.println(str);
         Vehicle.Resetcounter();
         LinkedList<Vehicle> minTourVehicle = new LinkedList();
         for (LinkedList<Node> route : MinTour) {
@@ -220,6 +213,7 @@ public class BasicBFS extends Graph {
             System.out.println(Vehicles_List.get(i));
         }
     }
+    
     private static double MinCost = Double.MAX_VALUE;
     private static LinkedList<LinkedList<Node>> MinTour = new LinkedList();
 

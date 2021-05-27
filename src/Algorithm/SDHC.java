@@ -13,7 +13,8 @@ import java.util.Scanner;
 public class SDHC extends Graph {
 
     public SDHC(String name) throws FileNotFoundException {
-        Reset(); Scan(name);
+        Reset();
+        Scan(name);
     }
 
     public boolean addVertex(int x, int y, int c, boolean s) {
@@ -47,7 +48,7 @@ public class SDHC extends Graph {
     }
 
     public void SDHCSimulation() {
-  
+        long start = System.currentTimeMillis();
         LinkedList<Vehicle> Vehicles_List = new LinkedList<>();
         LinkedList<Node> Remaining_Nodes = new LinkedList<>();
         Node temp = head.nextVertex; //dont need to add warehouse (head)
@@ -118,8 +119,13 @@ public class SDHC extends Graph {
             Vehicles_List.get(i).addNode(head);
         }
         super.total_cost_path = CalculateTourCost(Vehicles_List);
+        long end = start + 60 * 1000;//set time limit 
+        if (System.currentTimeMillis() < end) {
+            System.out.println(timer());
+        }
         System.out.println("Greedy simulation added with extra features");
         BasicPrint(Vehicles_List);
+        System.out.println("");
     }
 
     public LinkedList<Node> getSiteDependent(Object[] before_cast) {

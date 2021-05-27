@@ -13,8 +13,8 @@ public class Node implements Comparable {
     private static int counter = 0;
     private int id;
     public Node nextVertex;
-    public boolean checked=false;
-    public boolean visited=false;
+    public boolean checked = false;
+    public boolean visited = false;
     private boolean Site_Dependent;
     //public LinkedList <Node> Unchecked=new LinkedList();
 
@@ -26,10 +26,11 @@ public class Node implements Comparable {
         capacity = c;
         nextVertex = null;
     }
-    
-    public static void resetCounter(){
-        counter = 0;}
-    
+
+    public static void resetCounter() {
+        counter = 0;
+    }
+
     public int compareTo(Object customers) {
         Node customer = (Node) customers;
         return Integer.compare(capacity, customer.getCapacity());
@@ -44,18 +45,7 @@ public class Node implements Comparable {
         nextVertex = null;
         Site_Dependent = s;
     }
-    
-    /*public void assignUnchecked(Vehicle route) {
-        LinkedList<Node> lastRoute = route.getPathTaken();
-        Unchecked.clear();
-        for (int i = 0; i < Graph.allCustomers.size(); i++) {
-            Node temp = Graph.allCustomers.get(i);
-            if (!checked&&temp.capacity + route.Capacity <= Vehicle.getMax_Capacity()&&!lastRoute.contains(temp)&&temp.getId()!=0) {
-                Unchecked.add(temp);
-            }
-        }
-    }*/
-    
+
     public int getX() {
         return coordinates[0];
     }
@@ -82,12 +72,12 @@ public class Node implements Comparable {
         answer += "\nId: " + id + "\n";
         return answer;
     }
-    
-    public boolean testNode (Node a){
-        return (this.capacity + a.capacity) <= Vehicle.getMax_Capacity();}
-    
-    
-     public static LinkedList<Node> getRemaining() {
+
+    public boolean testNode(Node a) {
+        return (this.capacity + a.capacity) <= Vehicle.getMax_Capacity();
+    }
+
+    public static LinkedList<Node> getRemaining() {
         LinkedList<Node> answer = new LinkedList<>();
         for (int i = 0; i < Graph.allCustomers.size(); i++) {
             Node temp = Graph.allCustomers.get(i);
@@ -96,7 +86,6 @@ public class Node implements Comparable {
             }
         }
         return answer;
-    }   
-     
-  
+    }
+
 }

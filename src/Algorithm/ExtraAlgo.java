@@ -15,20 +15,27 @@ public class ExtraAlgo extends Graph {
     }
 
     public void ExtraAlgo() {
+        long start = System.currentTimeMillis();
         LinkedList<Vehicle> mincosttour = PredictedPath((double) 2 / 3); //optimal case
         total_cost_path = CalculateTourCost(mincosttour);
 
         for (double i = 50; i < 100; i++) {
             double value = i / (double) 100;
-           LinkedList<Vehicle> temp = PredictedPath(value);
+            LinkedList<Vehicle> temp = PredictedPath(value);
             total_cost_path = CalculateTourCost(mincosttour);
             if (total_cost_path > CalculateTourCost(temp)) {
                 mincosttour = temp;
                 total_cost_path = CalculateTourCost(temp);
             }
         }
+        long end = start + 60 * 1000;//set time limit 
+        if (System.currentTimeMillis() < end) {
+            System.out.println(timer());
+        }
         System.out.println("Grp123 Simulation (Extra Feature) ");
-        BasicPrint(mincosttour);}
+        BasicPrint(mincosttour);
+        System.out.println("");
+    }
 
     public LinkedList<Vehicle> PredictedPath(double z) {
         Reset();
