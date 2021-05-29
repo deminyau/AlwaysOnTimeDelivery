@@ -11,38 +11,42 @@ import java.util.LinkedList;
  * @author @author Hong Zhao Cheng Chiew Zhe Wei Yau De Min Wong Yu Xuan
  */
 public class BasicDFS extends Graph {
+    
+private static double MinCost = Double.MAX_VALUE;
+private static LinkedList<LinkedList<Node>> MinTour = new LinkedList();
 
     public BasicDFS(String filename) throws FileNotFoundException {
         //long timestart = 0;
         super(filename);
         LinkedList<Node> customers = new LinkedList();
         Node temp = head.nextVertex;
-        while (temp != null) {
+        while (temp != null) {//Add all nodes into LinkedList named customers
             customers.add(temp);
             temp = temp.nextVertex;
         }
         TreeNode<Node>[] RootNodes = ConstructSearchTree(customers, super.getHead());
+//set each customer as root node, construct search tree for each root node
         LinkedList<Node> RootNodesList = new LinkedList();
         for (TreeNode<Node> treenode : RootNodes) {
-            RootNodesList.add(treenode.getData());
+            RootNodesList.add(treenode.getData());//copy root nodes into RootNodeList
             /*System.out.println("Number of different routes if the first node is: " + treenode + " = " + treenode.FindNumOfRoute(treenode));
             treenode.PrintTree(treenode);
             System.out.println("");*///This part is printing the whole tree out, for debugging
         }
         //Generate all possible routes and store in RouteList
-        LinkedList<LinkedList<Node>> RouteList = new LinkedList();
-        for (TreeNode<Node> treenode : RootNodes) {
+        LinkedList<LinkedList<Node>> RouteList = new LinkedList();// list to store possible routes
+        for (TreeNode<Node> treenode : RootNodes) {//generate all possible routes, store into RouteList
             LinkedList<LinkedList<Node>> TempRouteList = treenode.AllPossibleRoute();
             for (LinkedList<Node> route : TempRouteList) {
                 RouteList.add(route);
             }
         }
-        BasicSimulation(RouteList, RootNodesList);
+        BasicSimulation(RouteList, RootNodesList);//Find the combination of routes with lowest tour cost
         System.out.println("");
     }
-
+    
+    //Find the highest possible number of node a vehicle can travel based on the maximum capacity
     public static int HighestNode(LinkedList<Node> customers, int maxcapacity) {
-        // highest possible number of node a vehicle can travel based on the maximum capacity
         Collections.sort(customers);
         int maxnode = 0, tempcapacity = 0, cnt = 0;
         for (Node c : customers) {
@@ -55,11 +59,11 @@ public class BasicDFS extends Graph {
         }
         return maxnode;
     }
-
+    //Find euclidean distance of 2 points
     public double CalDistance(Node a, Node b) {
         return Math.sqrt(Math.pow((a.getX() - b.getX()), 2) + Math.pow((a.getY() - b.getY()), 2));
     }
-
+    // Using a customer as root, construct a search tree
     public TreeNode<Node>[] ConstructSearchTree(LinkedList<Node> customers, Node head) {
         TreeNode<Node>[] RootNodes = new TreeNode[customers.size()];
         for (int i = 0; i < customers.size(); i++) {
@@ -71,7 +75,7 @@ public class BasicDFS extends Graph {
         }
         return RootNodes;
     }
-
+    //Supporting method for ConstructSearchTree, to add all possible child node into the tree
     public void AddAllChildNode(LinkedList<Node> customers, TreeNode<Node> node, int maxdepth) {
         for (int j = 0; j < customers.size(); j++) {
             TreeNode<Node> temp = new TreeNode<>(customers.get(j), customers.get(j).getCapacity());
@@ -84,14 +88,14 @@ public class BasicDFS extends Graph {
             }
         }
     }
-
+    //Get the cumulative capacity from the current node to root node
     public int ParentCapacity(TreeNode<Node> node) {
         if (node.getParent() != null) {
             return ParentCapacity(node.getParent()) + node.getCurrentcapacity();
         }
         return node.getCurrentcapacity();
     }
-
+    //Determine if a node is an ancestor of another node in the tree
     public boolean isParent(TreeNode<Node> e, TreeNode<Node> node) {
         if (node.getData().getId() == (e.getData().getId())) {
             return true;
@@ -103,13 +107,15 @@ public class BasicDFS extends Graph {
     }
 
     //Starting from this part below is for Tree of Routes, Above is for tree of customer
+    
+    //Construct the tree where the data items are LinkedList<Node> which refers to a route
     public TreeNode<LinkedList<Node>> ConstructRouteTree(LinkedList<Node> RootRoute, LinkedList<LinkedList<Node>> PossibleRoutes, LinkedList<Node> customers) {
         TreeNode<LinkedList<Node>> Root = new TreeNode(RootRoute);
         Root.SetHead(RootRoute);
         AddAllChildRoute(Root, PossibleRoutes, customers.size());
         return Root;
     }
-
+    //Supportive method for ConstructRouteTree to add all possible combinations of routes to the tree
     public void AddAllChildRoute(TreeNode<LinkedList<Node>> Route, LinkedList<LinkedList<Node>> PossibleRoutes, int maxdepth) {
         for (int j = 0; j < PossibleRoutes.size(); j++) {
             TreeNode<LinkedList<Node>> temp = new TreeNode(PossibleRoutes.get(j));
@@ -121,7 +127,7 @@ public class BasicDFS extends Graph {
             }
         }
     }
-
+    //Check if a route has repeated customer when compared to the ancestors, to see if can be added into the tree
     public boolean Repeated(TreeNode<LinkedList<Node>> e, TreeNode<LinkedList<Node>> node) {
         for (int i = 1; i < e.getData().size() - 1; i++) {
             if (node.getData().contains(e.getData().get(i))) {
@@ -134,6 +140,7 @@ public class BasicDFS extends Graph {
         return false;
     }
 
+    //Calculate the cost of a route
     public double RouteCost(LinkedList<Node> route) {
         int i = 0;
         double cost = 0;
@@ -152,6 +159,7 @@ public class BasicDFS extends Graph {
         return cost;
     }
 
+    //Calculate the total capacity used for a route
     public static int SumCapacity(LinkedList<Node> route) {
         int capacity = 0;
         for (Node c : route) {
@@ -160,6 +168,7 @@ public class BasicDFS extends Graph {
         return capacity;
     }
 
+    //Calculate the cost for the whole tour
     public double TourCost(LinkedList<Vehicle> vehicles) {
         double sum = 0;
         int k = 0;
@@ -171,6 +180,7 @@ public class BasicDFS extends Graph {
         return sum;
     }
 
+    //Tree traversal to find each possible tour(combination of routes)and find the lowest cost tour
     public void BasicSimulation(LinkedList<LinkedList<Node>> List, LinkedList<Node> customers) {
         long start = System.currentTimeMillis();
         long end = start + 50 * 1000; //set time limit for many customers
@@ -208,6 +218,7 @@ public class BasicDFS extends Graph {
         BasicPrint(minTourVehicle);
     }
 
+    //Print the tour
     public void BasicPrint(LinkedList<Vehicle> Vehicles_List) {
         System.out.println("Tour \nTotal Cost: " + MinCost);
         //display all vehicles 
@@ -215,10 +226,8 @@ public class BasicDFS extends Graph {
             System.out.println(Vehicles_List.get(i));
         }
     }
-    
-    private static double MinCost = Double.MAX_VALUE;
-    private static LinkedList<LinkedList<Node>> MinTour = new LinkedList();
 
+    //Find the minimum cost tour when using one of the route as the root in a tree 
     public void FindMinTour(TreeNode<LinkedList<Node>> Route, LinkedList<Node> customers) {
         if (Route.isLeaf()) {
             if (TreeTourCost(Route) < MinCost && AllCustomersAssigned(Route, customers)) {
@@ -238,6 +247,7 @@ public class BasicDFS extends Graph {
         }
     }
 
+    //Find the tour cost of a tour
     public double TreeTourCost(TreeNode<LinkedList<Node>> LeafRoute) {
         if (LeafRoute.isRoot()) {
             return RouteCost(LeafRoute.getData());
@@ -246,6 +256,7 @@ public class BasicDFS extends Graph {
         }
     }
 
+    //Check if all customers are fully assigned(the tour is complete)
     public boolean AllCustomersAssigned(TreeNode<LinkedList<Node>> LeafRoute, LinkedList<Node> customers) {
         boolean[] assigned = new boolean[customers.size()];
         TreeNode<LinkedList<Node>> Route = LeafRoute;

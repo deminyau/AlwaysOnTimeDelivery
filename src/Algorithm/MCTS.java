@@ -20,12 +20,40 @@ public class MCTS extends Graph {
     private double[][][] policy = new double[level][N][N];
     private double[][] globalPolicy = new double[N][N];
     private Node[] allStops = new Node[N];
+    private LinkedList<Node> AllCustomers;
 
     public MCTS(String name) throws FileNotFoundException {
         super(name);
         AssignStops();
+        AllCustomers=(LinkedList<Node>)Graph.allCustomers.clone();
     }
 
+    //This constructor is used for custom level simulation
+    public MCTS(String name, int lvl) throws FileNotFoundException {
+        super(name);
+        AssignStops();
+        AllCustomers=(LinkedList<Node>)Graph.allCustomers.clone();
+        level=lvl;
+        policy = new double[lvl][N][N];
+    }
+
+    public void setALPHA(int ALPHA) {
+        this.ALPHA = ALPHA;
+    }
+
+    public void setIterations(int iterations) {
+        this.iterations = iterations;
+    }
+    
+    //Simulate MCTS in another thread for multithreading
+    public LinkedList<Vehicle> MCTS_Simulation2() {
+        Reset();
+        LinkedList<Vehicle> answer = search(level, iterations);
+        System.out.println("\n*MCTS simulation running in another thread is done. Choose MCTS Simulation to show result.*");
+        System.out.println("*This MCTS simulation used hypeparameters: level= "+level+", iterations= "+iterations+", ALPHA= "+ALPHA+"*");
+        return answer;
+    }
+    
     public void AssignStops() {//Store all customers
         Node temp = head;
         for (int i = 0; i < allStops.length; i++) {
@@ -110,7 +138,7 @@ public class MCTS extends Graph {
         Vehicle v = new Vehicle();
         v.addNode(head); //initialize new_tour with first route with first stop at 0
         newTour.add(v);
-        for (Node node : Graph.allCustomers) {
+        for (Node node : AllCustomers) {
             node.visited = false;
         }
         while (true) {
@@ -119,7 +147,7 @@ public class MCTS extends Graph {
             Vehicle currentV = newTour.get(newTour.size() - 1);
             //find every possible successors that is not yet checked for the currentStop
             for (int i = 0; i < Graph.getNumber_of_customer(); i++) {
-                Node temp = Graph.allCustomers.get(i);
+                Node temp = AllCustomers.get(i);
                 if (temp.getId() == 0) {
                     continue;
                 }
@@ -136,7 +164,7 @@ public class MCTS extends Graph {
                 Vehicle vehicle = new Vehicle();
                 vehicle.addNode(head);
                 newTour.add(vehicle);
-                for (Node node : Graph.allCustomers) {
+                for (Node node : AllCustomers) {
                     if (node.getId() == 0) {
                         continue;
                     }
@@ -175,8 +203,8 @@ public class MCTS extends Graph {
         return possible_successor.get(j);
     }
 
-    public boolean AllStopsVisited() {//assign the node(customer) as visited and will not be explored anymore
-        for (Node node : Graph.allCustomers) {
+    public boolean AllStopsVisited() {//check if all the node(customer) are visited
+        for (Node node : AllCustomers) {
             if (node.getId() == 0) {
                 continue;
             } else {

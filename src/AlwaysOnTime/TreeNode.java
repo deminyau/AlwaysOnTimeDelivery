@@ -10,8 +10,8 @@ import java.util.List;
 public class TreeNode<E> {
 
     private E data;
-    private TreeNode<E> parent;
-    private List<TreeNode<E>> children;
+    private TreeNode<E> parent;//Parent of a treenode
+    private List<TreeNode<E>> children;//children of a treenode
     private int currentcapacity;
     private E head;
 
@@ -31,6 +31,7 @@ public class TreeNode<E> {
     }
 
     public TreeNode<E> addChild(TreeNode<E> node) {
+        //make sure only possible child node is added
         if (this.currentcapacity + node.getCurrentcapacity() <= Vehicle.getMax_Capacity()) {
             TreeNode<E> childNode = new TreeNode<E>(node.getData(), node.getCurrentcapacity());
             childNode.parent = this;
@@ -65,14 +66,17 @@ public class TreeNode<E> {
         return parent;
     }
 
+    //Check if a node is the root node
     public boolean isRoot() {
         return parent == null;
     }
 
+    //Check if a node is the leaf node
     public boolean isLeaf() {
         return children.size() == 0;
     }
 
+    //Get the depth a treenode is located at
     public int getDepth() {
         if (this.isRoot()) {
             return 0;
@@ -81,6 +85,7 @@ public class TreeNode<E> {
         }
     }
 
+    
     public int FindNumOfRoute(TreeNode<E> node) {
         /*Actually the result is also the number of nodes under that tree including the root node itself
 number of different possible routes for a given root node(not using warehouse itself as root node to avoid having route 0>0)
@@ -97,6 +102,7 @@ number of different possible routes for a given root node(not using warehouse it
         }
     }
 
+    //Find all possible routes(Use this method for root nodes only)
     public LinkedList<LinkedList<E>> AllPossibleRoute() {
         LinkedList<LinkedList<E>> List = new LinkedList();
         if (this.isRoot()) {//Use this method for root nodes only
@@ -138,6 +144,7 @@ number of different possible routes for a given root node(not using warehouse it
 
     private LinkedList<LinkedList<E>> AddNodesToRoutes(LinkedList<LinkedList<E>> List, TreeNode<E> node) {
         //This method is not for independent calling, supporting method for method AllPossibleRoute() only
+        //Add the correct nodes to the routes
         RecursionAdd(List, node);
         if (!node.isLeaf()) {
             List<TreeNode<E>> nodes = node.getChildren();
@@ -148,6 +155,7 @@ number of different possible routes for a given root node(not using warehouse it
         return List;
     }
 
+    //Print the whole tree in DFS manner
     public void PrintTree(TreeNode<E> rootnode) {
         System.out.println("Depth: " + rootnode.getDepth() + " " + rootnode);
         if (!rootnode.isLeaf()) {
