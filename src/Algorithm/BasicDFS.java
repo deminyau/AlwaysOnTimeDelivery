@@ -14,6 +14,7 @@ public class BasicDFS extends Graph {
 
     private static double MinCost = Double.MAX_VALUE;
     private static LinkedList<LinkedList<Node>> MinTour = new LinkedList();
+    private static long start1 = System.currentTimeMillis();
 
     public BasicDFS(String filename) throws FileNotFoundException, InterruptedException {
         //long timestart = 0;
@@ -43,12 +44,11 @@ public class BasicDFS extends Graph {
         }
 
         System.out.println("");
-        long start = System.currentTimeMillis();
         System.out.println("Maximum time set is 50 seconds.");
         System.out.println("");
         BasicSimulation(RouteList, RootNodesList);//Find the combination of routes with lowest tour cost
         long end = System.currentTimeMillis();
-        long timeElapsed = (end - start)/1000;
+        long timeElapsed = (end - start1)/1000;
         System.out.println("");
         System.out.println("Time Elapsed : " +timeElapsed +" s");
         System.out.println("");
@@ -198,16 +198,19 @@ public class BasicDFS extends Graph {
 
     //Tree traversal to find each possible tour(combination of routes)and find the lowest cost tour
     public void BasicSimulation(LinkedList<LinkedList<Node>> List, LinkedList<Node> customers) {
-        long start = System.currentTimeMillis();
-        long end = start + 50 * 1000; //set time limit for many customers
-        outermost:
-        for (int i = 0; i < List.size(); i++) {
+        
+        long end = start1 + 50 * 1000; //set time limit for many customers
+        stop:
+        for (int i = 0; i < List.size(); i++){
+            if (System.currentTimeMillis() > end) break;
             LinkedList<Node> MustUse = List.get(i);
             LinkedList<LinkedList<Node>> PossibleList = new LinkedList();
             for (int j = 0; j < List.size(); j++) {
+                 if (System.currentTimeMillis() > end) break stop;
                 LinkedList<Node> temp = List.get(j);
                 tag:
                 for (int k = 1; k < temp.size() - 1; k++) {
+                    if (System.currentTimeMillis() > end) break stop;
                     if (MustUse.contains(temp.get(k))) {
                         break tag;
                     } else if (k == temp.size() - 2) {
@@ -216,10 +219,10 @@ public class BasicDFS extends Graph {
                 }
             }
             //At this moment, I have a must use route and all other possible routes that can combine with this route
-            if (System.currentTimeMillis() > end) {
-                break outermost;
-            } //it is possible the 60 sec time limit is insufficient to even finish constructing a tree, 
+           
+            //it is possible the 60 sec time limit is insufficient to even finish constructing a tree, 
             //thus will get null, to see final result, remove this if statement and wait patiently for the output
+          
             TreeNode<LinkedList<Node>> RootRoute = ConstructRouteTree(MustUse, PossibleList, customers);
             FindMinTour(RootRoute, customers);
 
