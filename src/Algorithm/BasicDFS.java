@@ -41,17 +41,18 @@ public class BasicDFS extends Graph {
                 RouteList.add(route);
             }
         }
-        int cus = Number_of_customer;
-        if (cus >= 10 && cus < 12) {
-            stopperShort();
-            System.out.println("");
-            BasicSimulation(RouteList, RootNodesList);//Find the combination of routes with lowest tour cost
-            System.out.println("");
-        } else {
-            System.out.println(timer());
-            BasicSimulation(RouteList, RootNodesList);//Find the combination of routes with lowest tour cost
-            System.out.println("");
-        }
+
+        System.out.println("");
+        long start = System.currentTimeMillis();
+        System.out.println("Maximum time set is 50 seconds.");
+        System.out.println("");
+        BasicSimulation(RouteList, RootNodesList);//Find the combination of routes with lowest tour cost
+        long end = System.currentTimeMillis();
+        long timeElapsed = (end - start)/1000;
+        System.out.println("");
+        System.out.println("Time Elapsed : " +timeElapsed +" s");
+        System.out.println("");
+
     }
 
     //Find the highest possible number of node a vehicle can travel based on the maximum capacity
@@ -292,24 +293,5 @@ public class BasicDFS extends Graph {
             }
         }
         return true;
-    }
-
-    public void stopperShort() throws InterruptedException {
-        String formatter = "\r%s%6ds";
-        StringBuilder timeline = new StringBuilder();
-        timeline.append("Time Elapsed: |");
-        int i = 0;
-        while (i < 27) {
-            i++;
-            Thread.sleep(500);
-            if (i != 27) {
-                timeline.append("=");
-            } else {
-                timeline.append("=| ");
-                timeline.append(" (Simulation stop!) Max time : >");
-            }
-            System.out.printf(formatter, timeline, i);
-        }
-
     }
 }

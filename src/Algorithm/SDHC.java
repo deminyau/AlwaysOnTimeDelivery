@@ -120,12 +120,14 @@ public class SDHC extends Graph {
             Vehicles_List.get(i).addNode(head);
         }
         super.total_cost_path = CalculateTourCost(Vehicles_List);
-        long end = start + 60 * 1000;//set time limit 
-        if (System.currentTimeMillis() < end) {
-            System.out.println(timer());
-        }
+        System.out.println("No limited time is set since the simulation time is too fast");
+        System.out.println("");
         System.out.println("Greedy simulation added with extra features");
         BasicPrint(Vehicles_List);
+        long end = System.currentTimeMillis();
+        long timeElapsed = (end - start)/1000;
+        System.out.println("");
+        System.out.println("Time Elapsed : " +timeElapsed +" s");
         System.out.println("");
     }
 

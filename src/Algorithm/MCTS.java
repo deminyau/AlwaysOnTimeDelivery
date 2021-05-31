@@ -9,8 +9,8 @@ import java.util.Random;
  *
  * @author @author Hong Zhao Cheng Chiew Zhe Wei Yau De Min Wong Yu Xuan
  */
-
 public class MCTS extends Graph {
+
     //configuration set up-----------
     private int level = 3;
     private int iterations = 100;// must > 0
@@ -25,15 +25,15 @@ public class MCTS extends Graph {
     public MCTS(String name) throws FileNotFoundException {
         super(name);
         AssignStops();
-        AllCustomers=(LinkedList<Node>)Graph.allCustomers.clone();
+        AllCustomers = (LinkedList<Node>) Graph.allCustomers.clone();
     }
 
     //This constructor is used for custom level simulation
     public MCTS(String name, int lvl) throws FileNotFoundException {
         super(name);
         AssignStops();
-        AllCustomers=(LinkedList<Node>)Graph.allCustomers.clone();
-        level=lvl;
+        AllCustomers = (LinkedList<Node>) Graph.allCustomers.clone();
+        level = lvl;
         policy = new double[lvl][N][N];
     }
 
@@ -44,16 +44,18 @@ public class MCTS extends Graph {
     public void setIterations(int iterations) {
         this.iterations = iterations;
     }
-    
+
     //Simulate MCTS in another thread for multithreading
     public LinkedList<Vehicle> MCTS_Simulation2() {
         Reset();
         LinkedList<Vehicle> answer = search(level, iterations);
-        System.out.println("\n*MCTS simulation running in another thread is done. Choose MCTS Simulation to show result.*");
-        System.out.println("*This MCTS simulation used hypeparameters: level= "+level+", iterations= "+iterations+", ALPHA= "+ALPHA+"*");
+        System.out.println("\n**********Reminder**********");
+        System.out.println("*MCTS simulation running in another thread is done. Choose MCTS Simulation to show result.*");
+        System.out.println("*This MCTS simulation used hypeparameters: level= " + level + ", iterations= " + iterations + ", ALPHA= " + ALPHA + "*");
+        System.out.println("");
         return answer;
     }
-    
+
     public void AssignStops() {//Store all customers
         Node temp = head;
         for (int i = 0; i < allStops.length; i++) {
@@ -64,20 +66,17 @@ public class MCTS extends Graph {
 
     public void MCTS_Simulation() throws InterruptedException {
         Reset();
-        if (Number_of_customer >= 15) {
-            stopper();
-            System.out.println("");
-            LinkedList<Vehicle> answer = search(level, iterations);
-            System.out.println("MCTS simulation");
-            BasicPrint(answer);
-            System.out.println("");
-        } else {
-            LinkedList<Vehicle> answer = search(level, iterations);
-            System.out.println(timer());
-            System.out.println("MCTS simulation");
-            BasicPrint(answer);
-            System.out.println("");
-        } 
+        long start = System.currentTimeMillis();
+        LinkedList<Vehicle> answer = search(level, iterations);
+        System.out.println("Maximum time set is 50 seconds.");
+        System.out.println("MCTS simulation");
+        BasicPrint(answer);
+        long end = System.currentTimeMillis();
+        long timeElapsed = (end - start)/1000;
+        System.out.println("");
+        System.out.println("Time Elapsed : " +timeElapsed +" s");
+        System.out.println(""); 
+
     }
 
     public LinkedList<Vehicle> search(int level, int iterations) {
@@ -99,7 +98,7 @@ public class MCTS extends Graph {
                 long end = start + 30 * 1000;//set time limit 
                 if (System.currentTimeMillis() > end) {
                     return besttour;
-                } 
+                }
             }
             globalPolicy = policy[levels];
         }
@@ -232,7 +231,7 @@ public class MCTS extends Graph {
             }
             System.out.printf(formatter, timeline, i);
         }
-        
+
     }
 
     public boolean RepeatedNode(Node node, LinkedList<Vehicle> newTour) {//check whether there no repeated customer in the same tour

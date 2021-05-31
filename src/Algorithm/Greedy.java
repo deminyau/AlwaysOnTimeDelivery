@@ -20,8 +20,8 @@ public class Greedy extends Graph {
         LinkedList<Node> Remaining_Nodes = new LinkedList<>();
         Node temp = head.nextVertex; //dont need to add warehouse (head)
 
-        while (temp != null) { 
-        //list of all customer to be visited which will gradually be removed 
+        while (temp != null) {
+            //list of all customer to be visited which will gradually be removed 
             Remaining_Nodes.add(temp);
             temp = temp.nextVertex;
         }
@@ -61,12 +61,14 @@ public class Greedy extends Graph {
         } //next vehicle end while
 
         total_cost_path = CalculateTourCost(Vehicles_List);
-        long end = start + 60 * 1000;//set time limit 
-        if (System.currentTimeMillis() < end) {
-            System.out.println(timer());
-        }
+        System.out.println("No limited time is set since the simulation time is too fast");
+        System.out.println("");
         System.out.println("Greedy simulation");
         BasicPrint(Vehicles_List);
+        long end = System.currentTimeMillis();
+        long timeElapsed = (end - start) / 1000;
+        System.out.println("");
+        System.out.println("Time Elapsed : " + timeElapsed + " s");
         System.out.println("");
     }
 
