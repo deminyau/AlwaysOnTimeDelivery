@@ -11,11 +11,11 @@ import java.util.LinkedList;
  * @author @author Hong Zhao Cheng Chiew Zhe Wei Yau De Min Wong Yu Xuan
  */
 public class BasicDFS extends Graph {
-    
-private static double MinCost = Double.MAX_VALUE;
-private static LinkedList<LinkedList<Node>> MinTour = new LinkedList();
 
-    public BasicDFS(String filename) throws FileNotFoundException {
+    private static double MinCost = Double.MAX_VALUE;
+    private static LinkedList<LinkedList<Node>> MinTour = new LinkedList();
+
+    public BasicDFS(String filename) throws FileNotFoundException, InterruptedException {
         //long timestart = 0;
         super(filename);
         LinkedList<Node> customers = new LinkedList();
@@ -41,10 +41,19 @@ private static LinkedList<LinkedList<Node>> MinTour = new LinkedList();
                 RouteList.add(route);
             }
         }
-        BasicSimulation(RouteList, RootNodesList);//Find the combination of routes with lowest tour cost
-        System.out.println("");
+        int cus = Number_of_customer;
+        if (cus >= 10 && cus < 12) {
+            stopperShort();
+            System.out.println("");
+            BasicSimulation(RouteList, RootNodesList);//Find the combination of routes with lowest tour cost
+            System.out.println("");
+        } else {
+            System.out.println(timer());
+            BasicSimulation(RouteList, RootNodesList);//Find the combination of routes with lowest tour cost
+            System.out.println("");
+        }
     }
-    
+
     //Find the highest possible number of node a vehicle can travel based on the maximum capacity
     public static int HighestNode(LinkedList<Node> customers, int maxcapacity) {
         Collections.sort(customers);
@@ -59,10 +68,12 @@ private static LinkedList<LinkedList<Node>> MinTour = new LinkedList();
         }
         return maxnode;
     }
+
     //Find euclidean distance of 2 points
     public double CalDistance(Node a, Node b) {
         return Math.sqrt(Math.pow((a.getX() - b.getX()), 2) + Math.pow((a.getY() - b.getY()), 2));
     }
+
     // Using a customer as root, construct a search tree
     public TreeNode<Node>[] ConstructSearchTree(LinkedList<Node> customers, Node head) {
         TreeNode<Node>[] RootNodes = new TreeNode[customers.size()];
@@ -75,6 +86,7 @@ private static LinkedList<LinkedList<Node>> MinTour = new LinkedList();
         }
         return RootNodes;
     }
+
     //Supporting method for ConstructSearchTree, to add all possible child node into the tree
     public void AddAllChildNode(LinkedList<Node> customers, TreeNode<Node> node, int maxdepth) {
         for (int j = 0; j < customers.size(); j++) {
@@ -88,6 +100,7 @@ private static LinkedList<LinkedList<Node>> MinTour = new LinkedList();
             }
         }
     }
+
     //Get the cumulative capacity from the current node to root node
     public int ParentCapacity(TreeNode<Node> node) {
         if (node.getParent() != null) {
@@ -95,6 +108,7 @@ private static LinkedList<LinkedList<Node>> MinTour = new LinkedList();
         }
         return node.getCurrentcapacity();
     }
+
     //Determine if a node is an ancestor of another node in the tree
     public boolean isParent(TreeNode<Node> e, TreeNode<Node> node) {
         if (node.getData().getId() == (e.getData().getId())) {
@@ -107,7 +121,6 @@ private static LinkedList<LinkedList<Node>> MinTour = new LinkedList();
     }
 
     //Starting from this part below is for Tree of Routes, Above is for tree of customer
-    
     //Construct the tree where the data items are LinkedList<Node> which refers to a route
     public TreeNode<LinkedList<Node>> ConstructRouteTree(LinkedList<Node> RootRoute, LinkedList<LinkedList<Node>> PossibleRoutes, LinkedList<Node> customers) {
         TreeNode<LinkedList<Node>> Root = new TreeNode(RootRoute);
@@ -115,6 +128,7 @@ private static LinkedList<LinkedList<Node>> MinTour = new LinkedList();
         AddAllChildRoute(Root, PossibleRoutes, customers.size());
         return Root;
     }
+
     //Supportive method for ConstructRouteTree to add all possible combinations of routes to the tree
     public void AddAllChildRoute(TreeNode<LinkedList<Node>> Route, LinkedList<LinkedList<Node>> PossibleRoutes, int maxdepth) {
         for (int j = 0; j < PossibleRoutes.size(); j++) {
@@ -127,6 +141,7 @@ private static LinkedList<LinkedList<Node>> MinTour = new LinkedList();
             }
         }
     }
+
     //Check if a route has repeated customer when compared to the ancestors, to see if can be added into the tree
     public boolean Repeated(TreeNode<LinkedList<Node>> e, TreeNode<LinkedList<Node>> node) {
         for (int i = 1; i < e.getData().size() - 1; i++) {
@@ -200,12 +215,12 @@ private static LinkedList<LinkedList<Node>> MinTour = new LinkedList();
                 }
             }
             //At this moment, I have a must use route and all other possible routes that can combine with this route
-             if (System.currentTimeMillis() > end) {
-                break outermost;} //it is possible the 60 sec time limit is insufficient to even finish constructing a tree, 
-             //thus will get null, to see final result, remove this if statement and wait patiently for the output
+            if (System.currentTimeMillis() > end) {
+                break outermost;
+            } //it is possible the 60 sec time limit is insufficient to even finish constructing a tree, 
+            //thus will get null, to see final result, remove this if statement and wait patiently for the output
             TreeNode<LinkedList<Node>> RootRoute = ConstructRouteTree(MustUse, PossibleList, customers);
             FindMinTour(RootRoute, customers);
-           
 
         }
         Vehicle.Resetcounter();
@@ -277,5 +292,24 @@ private static LinkedList<LinkedList<Node>> MinTour = new LinkedList();
             }
         }
         return true;
+    }
+
+    public void stopperShort() throws InterruptedException {
+        String formatter = "\r%s%6ds";
+        StringBuilder timeline = new StringBuilder();
+        timeline.append("Time Elapsed: |");
+        int i = 0;
+        while (i < 27) {
+            i++;
+            Thread.sleep(500);
+            if (i != 27) {
+                timeline.append("=");
+            } else {
+                timeline.append("=| ");
+                timeline.append(" (Simulation stop!) Max time : >");
+            }
+            System.out.printf(formatter, timeline, i);
+        }
+
     }
 }

@@ -59,9 +59,9 @@ public class NeverOnTimeSdnBhd {
                             System.out.println(MultiThreading.answer.get(i));
                         }
                         System.out.println("-----------------------------");
-                        System.out.println("Would you like to run MCTS all over again?");
+                        System.out.println("Would you like to run MCTS all over again? (true/false)");
                         if (group123.nextBoolean()) {
-                            System.out.println("Would you like to custom the hyperparameters?");
+                            System.out.println("Would you like to custom the hyperparameters? (true/false)");
                             if (group123.nextBoolean()) {
                                 System.out.println("Enter number of levels: (<=3 levels is strongly recommended,level above 3 will exponentially increase time consumption.)");
                                 int level = group123.nextInt();

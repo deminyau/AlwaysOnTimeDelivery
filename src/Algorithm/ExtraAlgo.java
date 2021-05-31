@@ -86,7 +86,7 @@ public class ExtraAlgo extends Graph {
             Node[] choice = Sorted(Remaining_Nodes.toArray()); //sort remaining customer in descending
             Node current = choice[0]; //give priority to customer with higher demands first
             int i = Vehicle.PossibleSource(current, Vehicles_List);
-             //get index of ideal vehicle to add this customer (cheapest)
+            //get index of ideal vehicle to add this customer (cheapest)
             if (i == -1) { //case where no vehicles can accomodate this customer
                 Vehicle v = new Vehicle();
                 v.addNode(head); //create new vehicle with this customer as first destination

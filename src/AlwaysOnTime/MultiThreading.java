@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package AlwaysOnTime;
 
 import Algorithm.MCTS;
@@ -10,7 +5,7 @@ import java.util.LinkedList;
 
 /**
  *
- * @author zhaoc
+ * @author Hong Zhao Cheng (123)
  */
 public class MultiThreading implements Runnable {
 
