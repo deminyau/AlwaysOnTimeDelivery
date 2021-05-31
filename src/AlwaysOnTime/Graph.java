@@ -51,13 +51,13 @@ public class Graph {
     public void Scan(String name) throws FileNotFoundException {
         Scanner sc = new Scanner(new FileInputStream(name));
         String temp = sc.nextLine();   //first line of input
-        String[] tokens = temp.split(" "); 
+        String[] tokens = temp.split(" ");
         //line 0 input consist of Number of customer + Vehicle Max Capacity 
-        Number_of_customer = Integer.parseInt(tokens[0]); 
-        Vehicle.setMax_Capacity(Integer.parseInt(tokens[1])); 
+        Number_of_customer = Integer.parseInt(tokens[0]);
+        Vehicle.setMax_Capacity(Integer.parseInt(tokens[1]));
         int size = 0; //to get the number of lines (Number of customers + depot)
         while (sc.hasNextLine()) { //input with information of nodes
-            size ++;
+            size++;
             temp = sc.nextLine();
             tokens = temp.split(" ");
             addVertex(Integer.parseInt(tokens[0]), Integer.parseInt(tokens[1]), Integer.parseInt(tokens[2]));
@@ -105,7 +105,7 @@ public class Graph {
         return temp;
     }
 
-    public void Reset() { 
+    public void Reset() {
         Node temp = head;
         while (temp != null) {
             temp.visited = false; //reset all visited = false; 
@@ -179,17 +179,5 @@ public class Graph {
             tourcost += (Vehicles_List.get(i)).getPath_Cost();
         }
         return tourcost;
-    }
-
- 
-    
-    public String timer(){//timer for fast simulation
-        int timer = 0;
-        String str = "Time Elapsed: |";
-        for (int i = 0; i < 60; i++) {
-            str += " ";
-        }
-        str = str + "| " + timer + "s ";
-        return str;
     }
 }
