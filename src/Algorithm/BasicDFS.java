@@ -14,41 +14,21 @@ public class BasicDFS extends Graph {
 
     private static double MinCost = Double.MAX_VALUE;
     private static LinkedList<LinkedList<Node>> MinTour = new LinkedList();
-    private static long start1 = System.currentTimeMillis();
+    private static long start1 = System.nanoTime();
+    private static long end = Long.MAX_VALUE;
 
     public BasicDFS(String filename) throws FileNotFoundException, InterruptedException {
         //long timestart = 0;
         super(filename);
-        LinkedList<Node> customers = new LinkedList();
-        Node temp = head.nextVertex;
-        while (temp != null) {//Add all nodes into LinkedList named customers
-            customers.add(temp);
-            temp = temp.nextVertex;
-        }
-        TreeNode<Node>[] RootNodes = ConstructSearchTree(customers, super.getHead());
-//set each customer as root node, construct search tree for each root node
-        LinkedList<Node> RootNodesList = new LinkedList();
-        for (TreeNode<Node> treenode : RootNodes) {
-            RootNodesList.add(treenode.getData());//copy root nodes into RootNodeList
-            /*System.out.println("Number of different routes if the first node is: " + treenode + " = " + treenode.FindNumOfRoute(treenode));
-            treenode.PrintTree(treenode);
-            System.out.println("");*///This part is printing the whole tree out, for debugging
-        }
-        //Generate all possible routes and store in RouteList
-        LinkedList<LinkedList<Node>> RouteList = new LinkedList();// list to store possible routes
-        for (TreeNode<Node> treenode : RootNodes) {//generate all possible routes, store into RouteList
-            LinkedList<LinkedList<Node>> TempRouteList = treenode.AllPossibleRoute();
-            for (LinkedList<Node> route : TempRouteList) {
-                RouteList.add(route);
-            }
-        }
-
+        start1 = System.nanoTime();
         System.out.println("");
         System.out.println("Maximum time set is 50 seconds.");
         System.out.println("");
-        BasicSimulation(RouteList, RootNodesList);//Find the combination of routes with lowest tour cost
-        long end = System.currentTimeMillis();
-        long timeElapsed = (end - start1) / 1000;
+        long limit = 50 * 1000000000L;
+        end = start1 + limit;//set time limit for many customers
+        BasicSimulation();//Find the combination of routes with lowest tour cost
+        long end = System.nanoTime();
+        long timeElapsed = (end - start1) / (1000000000L);
         System.out.println("");
         System.out.println("Time Elapsed : " + timeElapsed + " s");
         System.out.println("");
@@ -132,7 +112,13 @@ public class BasicDFS extends Graph {
 
     //Supportive method for ConstructRouteTree to add all possible combinations of routes to the tree
     public void AddAllChildRoute(TreeNode<LinkedList<Node>> Route, LinkedList<LinkedList<Node>> PossibleRoutes, int maxdepth) {
+        if (System.nanoTime() > end) {
+            return;
+        }
         for (int j = 0; j < PossibleRoutes.size(); j++) {
+            if (System.nanoTime() > end) {
+                return;
+            }
             TreeNode<LinkedList<Node>> temp = new TreeNode(PossibleRoutes.get(j));
             if (!Repeated(temp, Route)) {
                 Route.addChild(temp);
@@ -197,40 +183,65 @@ public class BasicDFS extends Graph {
     }
 
     //Tree traversal to find each possible tour(combination of routes)and find the lowest cost tour
-    public void BasicSimulation(LinkedList<LinkedList<Node>> List, LinkedList<Node> customers) {
-
-        long end = start1 + 50 * 1000; //set time limit for many customers
-        stop:
-        for (int i = 0; i < List.size(); i++) {
-            if (System.currentTimeMillis() > end) {
+    public void BasicSimulation() {
+        LinkedList<Node> customers = new LinkedList();
+        Node temp = head.nextVertex;
+        while (temp != null) {//Add all nodes into LinkedList named customers
+            customers.add(temp);
+            temp = temp.nextVertex;
+        }
+        TreeNode<Node>[] RootNodes = ConstructSearchTree(customers, super.getHead());
+        //set each customer as root node, construct search tree for each root node
+        LinkedList<Node> RootNodesList = new LinkedList();
+        for (TreeNode<Node> treenode : RootNodes) {
+            if (System.nanoTime() > end) {
                 break;
             }
-            LinkedList<Node> MustUse = List.get(i);
+            RootNodesList.add(treenode.getData());//copy root nodes into RootNodeList
+            /*System.out.println("Number of different routes if the first node is: " + treenode + " = " + treenode.FindNumOfRoute(treenode));
+            treenode.PrintTree(treenode);
+            System.out.println("");*///This part is printing the whole tree out, for debugging
+        }
+        //Generate all possible routes and store in RouteList
+        LinkedList<LinkedList<Node>> RouteList = new LinkedList();// list to store possible routes
+        for (TreeNode<Node> treenode : RootNodes) {
+            if (System.nanoTime() > end) {
+                break;
+            }//generate all possible routes, store into RouteList
+            LinkedList<LinkedList<Node>> TempRouteList = treenode.AllPossibleRoute();
+            for (LinkedList<Node> route : TempRouteList) {
+                RouteList.add(route);
+            }
+        }
+        stop:
+        for (int i = 0; i < RouteList.size(); i++) {
+            if (System.nanoTime() > end) {
+                break;
+            }
+            LinkedList<Node> MustUse = RouteList.get(i);
             LinkedList<LinkedList<Node>> PossibleList = new LinkedList();
-            for (int j = 0; j < List.size(); j++) {
-                if (System.currentTimeMillis() > end) {
+            for (int j = 0; j < RouteList.size(); j++) {
+                if (System.nanoTime() > end) {
                     break stop;
                 }
-                LinkedList<Node> temp = List.get(j);
+                LinkedList<Node> temp2 = RouteList.get(j);
                 tag:
-                for (int k = 1; k < temp.size() - 1; k++) {
-                    if (System.currentTimeMillis() > end) {
+                for (int k = 1; k < temp2.size() - 1; k++) {
+                    if (System.nanoTime() > end) {
                         break stop;
                     }
-                    if (MustUse.contains(temp.get(k))) {
+                    if (MustUse.contains(temp2.get(k))) {
                         break tag;
-                    } else if (k == temp.size() - 2) {
-                        PossibleList.add(temp);
+                    } else if (k == temp2.size() - 2) {
+                        PossibleList.add(temp2);
                     }
                 }
             }
             //At this moment, I have a must use route and all other possible routes that can combine with this route
-
             //it is possible the 60 sec time limit is insufficient to even finish constructing a tree, 
             //thus will get null, to see final result, remove this if statement and wait patiently for the output
-            TreeNode<LinkedList<Node>> RootRoute = ConstructRouteTree(MustUse, PossibleList, customers);
-            FindMinTour(RootRoute, customers);
-
+            TreeNode<LinkedList<Node>> RootRoute = ConstructRouteTree(MustUse, PossibleList, RootNodesList);
+            FindMinTour(RootRoute, RootNodesList);
         }
         Vehicle.Resetcounter();
         LinkedList<Vehicle> minTourVehicle = new LinkedList();
@@ -258,6 +269,9 @@ public class BasicDFS extends Graph {
 
     //Find the minimum cost tour when using one of the route as the root in a tree 
     public void FindMinTour(TreeNode<LinkedList<Node>> Route, LinkedList<Node> customers) {
+        if (System.nanoTime() > end) {
+            return;
+        }
         if (Route.isLeaf()) {
             if (TreeTourCost(Route) < MinCost && AllCustomersAssigned(Route, customers)) {
                 MinCost = TreeTourCost(Route);
@@ -266,6 +280,9 @@ public class BasicDFS extends Graph {
                 while (route != null) {
                     MinTour.add(route.getData());
                     route = route.getParent();
+                }
+                if (System.nanoTime() > end) {
+                    return;
                 }
             }
         } else {
