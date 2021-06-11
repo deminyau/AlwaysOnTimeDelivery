@@ -256,7 +256,7 @@ public class BasicDFS extends Graph {
     //Print the tour
     public void BasicPrint(LinkedList<Vehicle> Vehicles_List) {
         if (Vehicles_List.isEmpty()) {
-            System.out.println("Cannot find any tour withinn the time limit");
+            System.out.println("Cannot find any tour within the time limit");
             System.out.println("Please extend the searching time limit");
         } else {
             System.out.println("Tour \nTotal Cost: " + MinCost);

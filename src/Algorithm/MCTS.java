@@ -49,7 +49,7 @@ public class MCTS extends Graph {
     public LinkedList<Vehicle> MCTS_Simulation2() {
         Reset();
         LinkedList<Vehicle> answer = search(level, iterations);
-        System.out.println("\n**********Reminder**********");
+        System.out.println("**********Reminder**********");
         System.out.println("*MCTS simulation running in another thread is done. Choose MCTS Simulation to show result.*");
         System.out.println("*This MCTS simulation used hypeparameters: level= " + level + ", iterations= " + iterations + ", ALPHA= " + ALPHA + "*");
         System.out.println("");
@@ -213,25 +213,6 @@ public class MCTS extends Graph {
             }
         }
         return true;
-    }
-
-    public void stopper() throws InterruptedException {
-        String formatter = "\r%s%6ds";
-        StringBuilder timeline = new StringBuilder();
-        timeline.append("Time Elapsed: |");
-        int i = 0;
-        while (i < 50) {
-            i++;
-            Thread.sleep(500);
-            if (i != 50) {
-                timeline.append("=");
-            } else {
-                timeline.append("=| ");
-                timeline.append(" (Simulation stop!) Max time : >");
-            }
-            System.out.printf(formatter, timeline, i);
-        }
-
     }
 
     public boolean RepeatedNode(Node node, LinkedList<Vehicle> newTour) {//check whether there no repeated customer in the same tour
